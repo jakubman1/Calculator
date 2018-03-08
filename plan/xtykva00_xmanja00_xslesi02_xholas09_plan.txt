@@ -1,0 +1,47 @@
+PLÁN
+
+Úkoly:
+Kuba:
+- Nakreslení mockupu ve Photoshopu.
+- Testy pro matematickou knihovnu
+Jirka:
+- Napsat plán.
+- Odevzdávat soubory ve wisu.
+- README
+Honza:
+- Testy pro matematickou knihovnu
+Pepa:
+- Uživatelská pøíruèka.
+- Manuál k instalaci/odinstalaci
+Všichni:
+- Návrh mockupu
+- Soupis hodnoceni.txt.
+- Kontrola uživatelské pøíruèky.
+- Kódování
+- Programová dokumentace
+- Instalace
+- Obhajoba
+
+Termíny:
+- 15.3. testy pro matematickou knihovnu
+- 19.3. kontrola správnosti testù
+- 25.3. základní prvky uživatelského rozhraní
+- 1.4. matematická knihovna
+- 8.4. Formátování vstupního pole
+- 8.4. pokroèilé prvky UI
+- 8.4. kontrola matematické knihovny
+- 15.4. dokonèení práce na funkcích
+- 15.4. Makefile
+- 24.4. Odevzdání dokonèené kalkulaèky
+
+Komunikaèní kanály: Facebook, Trello, telefon
+
+Pravidla pro komunikaci (pro Trello):
+Dotazy zapisovat do sloupce Dotazy a diskuse.
+Vyøešené dotazy jsou pøesunuty do sloupce Dotazy - archiv
+Pokud øešíte úkol ze sloupce úkoly, pøesuòte si kartu do svého sloupce, po dokonèení ji pøesuòte do sloupce *hotovo* (pokud nemá pøiložený soubor)
+Pokud øešíte úkol ze sloupce úkoly, pøesuòte si kartu do svého sloupce, po dokonèení ji pøesuòte do sloupce *hotovo* (pokud nemá pøiložený soubor)
+
+Systém pro správu verzí: Git
+Systém pro správu hosting: Github
+
