@@ -290,3 +290,5 @@ src/.vs/Calculator/v15/.suo
 src/.vs/Calculator/v15/Server/sqlite3/storage.ide
 src/obj/Debug/Calculator.csproj.CoreCompileInputs.cache
 *.cache
+src/.vs/Calculator/v15/.suo
+src/.vs/Calculator/v15/Server/sqlite3/storage.ide
