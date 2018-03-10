@@ -61,5 +61,20 @@ namespace MathLibTest
         {
             math.Divide(42, 0);
         }
+
+        [TestMethod]
+        public void Factorial()
+        {
+            Assert.AreEqual(1, math.Factorial(0));
+            Assert.AreEqual(1, math.Factorial(1));
+            Assert.AreEqual(6, math.Factorial(3));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void FactorialException()
+        {
+            math.Factorial(-1);
+        }
     }
 }

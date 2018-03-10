@@ -56,7 +56,7 @@ namespace MathLibrary
         /// </summary>
         /// <param name="n">Number to get factorial from</param>
         /// <returns>Result of n!</returns>
-        public double factorial(double n)
+        public double Factorial(double n)
         {
             return n;
         }
@@ -67,7 +67,7 @@ namespace MathLibrary
         /// <param name="n">Operand</param>
         /// <param name="exp">Root base</param>
         /// <returns></returns>
-        public double root(double n, double exp)
+        public double Root(double n, double exp)
         {
             return n;
         }
