@@ -62,11 +62,22 @@ namespace MathLibrary
         }
 
         /// <summary>
-        /// 
+        /// n to the power of exp
         /// </summary>
-        /// <param name="n">Operand</param>
-        /// <param name="exp">Root base</param>
-        /// <returns></returns>
+        /// <param name="n">Base</param>
+        /// <param name="exp">Exponent</param>
+        /// <returns>n to the power of exp</returns>
+        public double Pow(double n, double exp)
+        {
+            return n;
+        }
+
+        /// <summary>
+        /// exp root of n
+        /// </summary>
+        /// <param name="n">Base</param>
+        /// <param name="exp">Exponent</param>
+        /// <returns>exp root of n</returns>
         public double Root(double n, double exp)
         {
             return n;
