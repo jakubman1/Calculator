@@ -51,6 +51,27 @@ namespace MathLibrary
             return a / b;
         }
 
+        /// <summary>
+        /// Returns factorial of given number
+        /// </summary>
+        /// <param name="n">Number to get factorial from</param>
+        /// <returns>Result of n!</returns>
+        public double Factorial(double n)
+        {
+            return n;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="n">Operand</param>
+        /// <param name="exp">Root base</param>
+        /// <returns></returns>
+        public double Root(double n, double exp)
+        {
+            return n;
+        }
+
 
     }
 }
