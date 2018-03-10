@@ -76,5 +76,12 @@ namespace MathLibTest
         {
             math.Factorial(-1);
         }
+
+        [TestMethod]
+        public void Root()
+        {
+            Assert.AreEqual(2, math.Root(4, 2));
+            Assert.AreEqual(1 / 3, math.Root(9, -2), 0.001);
+        }
     }
 }
