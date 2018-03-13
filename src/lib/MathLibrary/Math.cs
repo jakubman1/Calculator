@@ -14,7 +14,7 @@ namespace MathLibrary
         /// <param name="a">First number</param>
         /// <param name="b">Second number</param>
         /// <returns>Result of a + b</returns>
-        public double Add(double a, double b)
+        public static double Add(double a, double b)
         {
             return a + b;
         }
@@ -24,7 +24,7 @@ namespace MathLibrary
         /// <param name="a">First number</param>
         /// <param name="b">Second number</param>
         /// <returns>Result of a - b</returns>
-        public double Sub(double a, double b)
+        public static double Sub(double a, double b)
         {
             return a - b;
         }
@@ -35,7 +35,7 @@ namespace MathLibrary
         /// <param name="a">First number</param>
         /// <param name="b">Second number</param>
         /// <returns>Result of a * b</returns>
-        public double Multiply(double a, double b)
+        public static double Multiply(double a, double b)
         {
             return a * b;
         }
@@ -46,7 +46,7 @@ namespace MathLibrary
         /// <param name="a">First number</param>
         /// <param name="b">Second number</param>
         /// <returns>Result of a / b</returns>
-        public double Divide(double a, double b)
+        public static double Divide(double a, double b)
         {
             return a / b;
         }
@@ -56,7 +56,7 @@ namespace MathLibrary
         /// </summary>
         /// <param name="n">Number to get factorial from</param>
         /// <returns>Result of n!</returns>
-        public double Factorial(double n)
+        public static double Factorial(double n)
         {
             return n;
         }
@@ -67,7 +67,7 @@ namespace MathLibrary
         /// <param name="n">Base</param>
         /// <param name="exp">Exponent</param>
         /// <returns>n to the power of exp</returns>
-        public double Pow(double n, double exp)
+        public static double Pow(double n, double exp)
         {
             return n;
         }
@@ -78,11 +78,20 @@ namespace MathLibrary
         /// <param name="n">Base</param>
         /// <param name="exp">Exponent</param>
         /// <returns>exp root of n</returns>
-        public double Root(double n, double exp)
+        public static double Root(double n, double exp)
         {
             return n;
         }
 
+        /// <summary>
+        /// Return absolute value of a nuber
+        /// </summary>
+        /// <param name="a">Number to get absolute value from</param>
+        /// <returns>Absolute value of a</returns>
+        public static double Abs(double a)
+        {
+            return a;
+        }
 
     }
 }
