@@ -76,5 +76,27 @@ namespace MathLibTest
         {
             math.Factorial(-1);
         }
+
+        [TestMethod]
+        public void Pow()
+        {
+            Assert.AreEqual(8, math.Pow(2, 3));
+            Assert.AreEqual(0.5, math.Pow(2, -1), 0.001);
+            Assert.AreEqual(2, math.Pow(4, 0.5), 0.001);
+        }
+
+        [TestMethod]
+        public void Root()
+        {
+            Assert.AreEqual(2, math.Root(4, 2));
+            Assert.AreEqual(1 / 3, math.Root(9, -2), 0.001);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void RootException()
+        {
+            math.Root(-1, 2);
+        }
     }
 }
