@@ -83,7 +83,15 @@ namespace MathLibrary
             return n;
         }
 
-        
+        /// <summary>
+        /// Return absolute value of a nuber
+        /// </summary>
+        /// <param name="a">Number to get absolute value from</param>
+        /// <returns>Absolute value of a</returns>
+        public static double Abs(double a)
+        {
+            return a;
+        }
 
     }
 }
