@@ -27,6 +27,13 @@ namespace MathLibTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void AddOverflow()
+        {
+            MathLibrary.Math.Add(Double.MaxValue, 1);
+        }
+
+        [TestMethod]
         public void Substract()
         {
             Assert.AreEqual(0, MathLibrary.Math.Sub(42, 42));
@@ -38,11 +45,32 @@ namespace MathLibTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SubOverflow1()
+        {
+            MathLibrary.Math.Sub(Double.MaxValue, -1);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SubOverflow2()
+        {
+            MathLibrary.Math.Sub(-1 * Double.MaxValue, 1);
+        }
+
+        [TestMethod]
         public void Multiply()
         {
             Assert.AreEqual(42, MathLibrary.Math.Multiply(21, 2));
             Assert.AreEqual(-5.4008, MathLibrary.Math.Multiply(3.14, -1.72), 0.001);
             Assert.AreEqual(0.111, MathLibrary.Math.Multiply(1.0 / 3, 1.0 / 3), 0.001);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void MultiplyOverflow()
+        {
+            MathLibrary.Math.Multiply(Double.MaxValue, 2);
         }
 
         [TestMethod]
@@ -55,9 +83,16 @@ namespace MathLibTest
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void DivideException()
+        public void DivideByZeroException()
         {
             MathLibrary.Math.Divide(42, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void DivideOverflow()
+        {
+            MathLibrary.Math.Divide(Double.MaxValue, 0.42);
         }
 
         [TestMethod]
@@ -74,6 +109,12 @@ namespace MathLibTest
         {
             MathLibrary.Math.Factorial(-1);
         }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void FactorialOverflow()
+        {
+            MathLibrary.Math.Factorial(Double.MaxValue);
+        }
 
         [TestMethod]
         public void Pow()
@@ -81,6 +122,13 @@ namespace MathLibTest
             Assert.AreEqual(8, MathLibrary.Math.Pow(2, 3));
             Assert.AreEqual(0.5, MathLibrary.Math.Pow(2, -1), 0.001);
             Assert.AreEqual(2, MathLibrary.Math.Pow(4, 0.5), 0.001);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void PowOverflow()
+        {
+            MathLibrary.Math.Pow(Double.MaxValue, 2);
         }
 
         [TestMethod]
@@ -95,6 +143,13 @@ namespace MathLibTest
         public void RootException()
         {
             MathLibrary.Math.Root(-1, 2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void RootOverflow()
+        {
+            MathLibrary.Math.Root(Double.MaxValue, 0.5);
         }
     }
 }
