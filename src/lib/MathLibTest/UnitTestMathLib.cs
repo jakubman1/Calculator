@@ -30,7 +30,7 @@ namespace MathLibTest
         [ExpectedException(typeof(ArgumentException))]
         public void AddOverflow()
         {
-            MathLibrary.Math.Add(Double.MaxValue, 1);
+            MathLibrary.Math.Add(Double.MaxValue, Double.MaxValue);
         }
 
         [TestMethod]
@@ -48,14 +48,14 @@ namespace MathLibTest
         [ExpectedException(typeof(ArgumentException))]
         public void SubOverflow1()
         {
-            MathLibrary.Math.Sub(Double.MaxValue, -1);
+            MathLibrary.Math.Sub(Double.MaxValue, -1 * Double.MaxValue);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void SubOverflow2()
         {
-            MathLibrary.Math.Sub(-1 * Double.MaxValue, 1);
+            MathLibrary.Math.Sub(-1 * Double.MaxValue, Double.MaxValue);
         }
 
         [TestMethod]
