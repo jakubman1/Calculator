@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-//TODO: Test extreme cases (eg. DOUBLE_MAX * DOUBLE_MAX)
 namespace MathLibTest
 {
     [TestClass]
