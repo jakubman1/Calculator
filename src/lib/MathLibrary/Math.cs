@@ -16,7 +16,10 @@ namespace MathLibrary
         /// <returns>Result of a + b</returns>
         public static double Add(double a, double b)
         {
-            return a + b;
+            double tmp = a + b;
+            if (Double.IsPositiveInfinity(tmp) == true) throw new ArgumentException("Result is above maximum system precision.");
+            if (Double.IsNegativeInfinity(tmp) == true) throw new ArgumentException("Result is below maximum system precision.");
+            return tmp;
         }
         /// <summary>
         /// Substracts b from a
@@ -26,7 +29,10 @@ namespace MathLibrary
         /// <returns>Result of a - b</returns>
         public static double Sub(double a, double b)
         {
-            return a - b;
+            double tmp = a - b;
+            if (Double.IsPositiveInfinity(tmp) == true) throw new ArgumentException("Result is above maximum system precision.");
+            if (Double.IsNegativeInfinity(tmp) == true) throw new ArgumentException("Result is below maximum system precision.");
+            return tmp;
         }
         
         /// <summary>
@@ -37,7 +43,10 @@ namespace MathLibrary
         /// <returns>Result of a * b</returns>
         public static double Multiply(double a, double b)
         {
-            return a * b;
+            double tmp = a * b;
+            if (Double.IsPositiveInfinity(tmp) == true) throw new ArgumentException("Result is above maximum system precision.");
+            if (Double.IsNegativeInfinity(tmp) == true) throw new ArgumentException("Result is below maximum system precision.");
+            return tmp;
         }
 
         /// <summary>
@@ -48,8 +57,11 @@ namespace MathLibrary
         /// <returns>Result of a / b</returns>
         public static double Divide(double a, double b)
         {
-            if (b == 0) throw new Exception("Division by zero");
-            return a / b;
+            if (b == 0) throw new ArgumentException("Division by zero.");
+            double tmp = a / b;
+            if (Double.IsPositiveInfinity(tmp) == true) throw new ArgumentException("Result is above maximum system precision.");
+            if (Double.IsNegativeInfinity(tmp) == true) throw new ArgumentException("Result is below maximum system precision.");
+            return tmp;
         }
 
         /// <summary>
@@ -59,9 +71,9 @@ namespace MathLibrary
         /// <returns>Result of n!</returns>
         public static double Factorial(int n)
         {
-            if (n < 0) throw new Exception("Factorial of negative number");
+            if (n < 0) throw new ArgumentException("Factorial of negative number.");
             
-            if (n == 1)
+            if (n == 0)
             {
                 return 1;
             }
@@ -71,6 +83,7 @@ namespace MathLibrary
             {
                 n--;
                 tmp *= n;
+                if (Double.IsPositiveInfinity(tmp) == true) throw new ArgumentException("Result is above maximum system precision.");
             }
             return tmp;
         }
@@ -83,7 +96,7 @@ namespace MathLibrary
         /// <returns>n to the power of exp</returns>
         public static double Pow(double n, int exp)
         {
-            if (exp <= 0) throw new Exception("The exponent is not a natural number");
+            if (exp <= 0) throw new Exception("The exponent is not a natural number.");
 
             double tmp = n;
             while (exp > 1)
@@ -91,6 +104,7 @@ namespace MathLibrary
                 n *= tmp;
                 exp--;
             }
+            if (Double.IsPositiveInfinity(n) == true) throw new ArgumentException("Result is above maximum system precision.");
             return n;
         }
 
@@ -102,6 +116,7 @@ namespace MathLibrary
         /// <returns>exp root of n</returns>
         public static double Root(double n, double exp)
         {
+            if (n < 0 && exp % 2 == 0) throw new ArgumentException("Such root cannot be solved.");
             return n;
         }
 

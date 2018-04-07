@@ -112,7 +112,7 @@ namespace MathLibTest
         [ExpectedException(typeof(ArgumentException))]
         public void FactorialOverflow()
         {
-            MathLibrary.Math.Factorial(Double.MaxValue);
+            MathLibrary.Math.Factorial(int.MaxValue);
         }
 
         [TestMethod]
