@@ -119,8 +119,17 @@ namespace MathLibTest
         public void Pow()
         {
             Assert.AreEqual(8, MathLibrary.Math.Pow(2, 3));
-            Assert.AreEqual(0.5, MathLibrary.Math.Pow(2, -1), 0.001);
-            Assert.AreEqual(2, MathLibrary.Math.Pow(4, 0.5), 0.001);
+            Assert.AreEqual(42, MathLibrary.Math.Pow(42, 1));
+            Assert.AreEqual(1, MathLibrary.Math.Pow(0, 1));
+            Assert.AreEqual(0, MathLibrary.Math.Pow(0, 3));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void PowExponentException()
+        {
+            MathLibrary.Math.Pow(42, 0);
+            MathLibrary.Math.Pow(5, -1);
         }
 
         [TestMethod]

@@ -96,7 +96,12 @@ namespace MathLibrary
         /// <returns>n to the power of exp</returns>
         public static double Pow(double n, int exp)
         {
-            if (exp <= 0) throw new Exception("The exponent is not a natural number.");
+            if (exp <= 0) throw new ArgumentException("The exponent is not a natural number.");
+
+            if (n == 0 && exp == 1)
+            {
+                return 1;
+            }
 
             double tmp = n;
             while (exp > 1)
