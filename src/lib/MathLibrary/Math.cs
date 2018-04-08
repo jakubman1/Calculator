@@ -71,12 +71,8 @@ namespace MathLibrary
         /// <returns>Result of n!</returns>
         public static double Factorial(int n)
         {
-            if (n < 0) throw new ArgumentException("Factorial of negative number.");
-            
-            if (n == 0)
-            {
-                return 1;
-            }
+            if (n < 0) throw new ArgumentException("Factorial of negative number.");         
+            if (n == 0) return 1;      
 
             double tmp = n;
             while(n > 1)
@@ -97,11 +93,7 @@ namespace MathLibrary
         public static double Pow(double n, int exp)
         {
             if (exp <= 0) throw new ArgumentException("The exponent is not a natural number.");
-
-            if (n == 0 && exp == 1)
-            {
-                return 1;
-            }
+            if (n == 0 && exp == 1) return 1;
 
             double tmp = n;
             while (exp > 1)
@@ -119,10 +111,25 @@ namespace MathLibrary
         /// <param name="n">Base</param>
         /// <param name="exp">Exponent</param>
         /// <returns>exp root of n</returns>
-        public static double Root(double n, double exp)
+        public static double Root(double n, int exp)
         {
             if (n < 0 && exp % 2 == 0) throw new ArgumentException("Such root cannot be solved.");
-            return n;
+            if (exp <= 0) throw new ArgumentException("The exponent is not a natural number.");
+            if (exp == 1) return n;
+
+            double guess = 1;
+            double newGuess = guess;
+            double eps = 0.00001; // Precision parameter
+
+            while (true)
+            {
+                newGuess = Divide(n, Pow(guess, exp - 1));
+                guess = Divide(Add(Multiply(guess, exp - 1), newGuess), exp);
+                if (Abs(Sub(guess, newGuess)) < eps)
+                {
+                    return newGuess;
+                }
+            }
         }
 
         /// <summary>
@@ -132,10 +139,8 @@ namespace MathLibrary
         /// <returns>Absolute value of a</returns>
         public static double Abs(double a)
         {
-            if (a < 0)
-            {
-                return -a;
-            }
+            if (a < 0) return -a;
+
             return a;
         }
 

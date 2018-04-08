@@ -142,8 +142,8 @@ namespace MathLibTest
         [TestMethod]
         public void Root()
         {
-            Assert.AreEqual(2, MathLibrary.Math.Root(4, 2));
-            Assert.AreEqual(1 / 3, MathLibrary.Math.Root(9, -2), 0.001);
+            Assert.AreEqual(2, MathLibrary.Math.Root(4, 2), 0.0001);
+            Assert.AreEqual(1.4142, MathLibrary.Math.Root(2, 2), 0.0001);
         }
 
         [TestMethod]
@@ -151,13 +151,15 @@ namespace MathLibTest
         public void RootException()
         {
             MathLibrary.Math.Root(-1, 2);
+            MathLibrary.Math.Root(2, 0);
+            MathLibrary.Math.Root(3, -5);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void RootOverflow()
         {
-            MathLibrary.Math.Root(Double.MaxValue, 0.5);
+           // MathLibrary.Math.Root(Double.MaxValue, 0.5);
         }
     }
 }
