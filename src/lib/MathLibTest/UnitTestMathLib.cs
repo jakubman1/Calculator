@@ -154,12 +154,5 @@ namespace MathLibTest
             MathLibrary.Math.Root(2, 0);
             MathLibrary.Math.Root(3, -5);
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void RootOverflow()
-        {
-           // MathLibrary.Math.Root(Double.MaxValue, 0.5);
-        }
     }
 }
