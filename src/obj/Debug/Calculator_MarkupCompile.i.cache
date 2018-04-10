@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\SharedProjects\Calculator\src\Calculator\obj\Debug\
+C:\SharedProjects\Calculator\src\obj\Debug\
 Calculator
 none
 false
 DEBUG;TRACE
-C:\SharedProjects\Calculator\src\Calculator\App.xaml
+C:\SharedProjects\Calculator\src\App.xaml
 11151548125
 
 9-748548027
-131569487696
+141273402080
 MainWindow.xaml;
 
 True
