@@ -7,13 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525" Background="#FFF2F2F2">
     <Grid>
-        <RichTextBox Margin="10,117,10,9.8">
-            <FlowDocument>
+        <RichTextBox x:Name="InputTextBox" Margin="10,117,10,9.8">
+            <FlowDocument FontSize="50">
                 <Paragraph>
                     <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <TextBlock x:Name="TextBlockResult" Margin="10,10,10,210" TextWrapping="Wrap" Background="White" FontSize="72" Text="Result" Foreground="#FF2D3436"/>
+        <TextBlock x:Name="TextBlockResult" Margin="10,10,10,0" TextWrapping="Wrap" Background="White" FontSize="72" Text="Result" Foreground="#FF2D3436" Height="99" VerticalAlignment="Top"/>
     </Grid>
 </Window>
