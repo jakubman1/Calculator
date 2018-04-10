@@ -56,7 +56,7 @@ namespace MathLibrary
         /// </summary>
         /// <param name="n">Number to get factorial from</param>
         /// <returns>Result of n!</returns>
-        public static double Factorial(double n)
+        public static double Factorial(uint n)
         {
             return n;
         }
