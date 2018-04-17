@@ -41,15 +41,16 @@ namespace Calculator
             int startIndex = 0;
             int endIndex = 0;
 
-            
 
+            Console.WriteLine(text);
             for(int i = 0; i < text.Length; i++)
             {
+                
                 //We found a number
                 if ((text[i] >= '0' && text[i] <= '9') || (text[i] == '.' || text[i] == ','))
                 {
                     //Check for the whole number
-                    while ((text[i] >= '0' && text[i] <= '9') || (text[i] == '.' || text[i] == ','))
+                    while (i < text.Length && ((text[i] >= '0' && text[i] <= '9') || (text[i] == '.' || text[i] == ',')))
                     {
                         i++;
                     }
@@ -67,7 +68,7 @@ namespace Calculator
                     }
                     w.StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward);
                     w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward);
-                    w.Text = text.Substring(startIndex, endIndex - startIndex + 1);
+                    w.Text = text.Substring(startIndex, endIndex - (startIndex + 1));
 
                     words.Add(w);
 
@@ -79,7 +80,7 @@ namespace Calculator
                     Word w = new Word();
                     w.StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward);
                     w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward);
-                    w.Text = text.Substring(startIndex, endIndex - startIndex + 1);
+                    w.Text = text.Substring(startIndex, endIndex - (startIndex + 1));
                     w.Type = 1;
                 }
 
@@ -96,7 +97,7 @@ namespace Calculator
                 else if((text[i] >= 'A' && text[i] <= 'Z') || (text[i] >= 'a' && text[i] <= 'z'))
                 {
                     Word w = new Word();
-                    if ((i != 0 && !IsOperator(text[i-1])) || (i != text.Length && !IsOperator(text[i + 1]))) {
+                    if ((i != 0 && !IsOperator(text[i-1])) || (i < text.Length && !IsOperator(text[i + 1]))) {
                         w.Type = -1;
                     }
                     else
@@ -149,7 +150,7 @@ namespace Calculator
                 if(context == TextPointerContext.ElementStart && navigator.Parent is Run)
                 {
                     text = ((Run)navigator.Parent).Text;
-                    if(text != "")
+                    if(text != "" && text.Length != 0)
                     {
                         CheckWords((Run)navigator.Parent, text);
                     }
