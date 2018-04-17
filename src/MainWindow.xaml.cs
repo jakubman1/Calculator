@@ -210,6 +210,24 @@ namespace Calculator
             ((Label)sender).Background = (Brush)bc.ConvertFrom("#3B3B98");
         }
 
+        /// <summary>
+        /// Changes the color of the button's background to darker "Sasquatch Socks" when the mouse is clicked to make an effect that the button is pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonPressedEffect(object sender, MouseEventArgs e)
+        {
+            BrushConverter bc = new BrushConverter();
+            ((Label)sender).Background = (Brush)bc.ConvertFrom("#CB1C51");
+        }
+
+        // testovaci funkce, je zapotrebi zavolat ButtenPressedEffect a v eventech tlacitka zavolat ButtonEnter pri MouseLeftButtonUp
+        private void Button42Clicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonPressedEffect(sender, e);
+            TextBlockResult.Text = "test 42";
+        }
+
 
 
         /* internal void CreateColorSyntax(RichTextBox textBox)
