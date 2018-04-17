@@ -26,7 +26,7 @@ namespace Calculator
             InitializeComponent();
         }
 
-        new struct Word
+        struct Word
         {
             public TextPointer StartPos;
             public TextPointer EndPos;
@@ -183,8 +183,8 @@ namespace Calculator
         /// <param name="e"></param>
         private void ButtonEnter(object sender, MouseEventArgs e)
         {
-            BrushConverter bc = new BrushConverter();
-            ((Label)sender).Background = (Brush)bc.ConvertFrom("#FC427B");
+            Brush bgBrush = new SolidColorBrush(Color.FromArgb(255, 252, 66, 123));
+            ((Label)sender).Background = bgBrush;
         }
 
         /// <summary>
