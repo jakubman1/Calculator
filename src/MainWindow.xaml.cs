@@ -176,88 +176,121 @@ namespace Calculator
 
         }
 
-       
-
-       /* internal void CreateColorSyntax(RichTextBox textBox)
+        /// <summary>
+        /// Changes the color of the button's background to "Sasquatch Socks" when mouse enters
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonEnter(object sender, MouseEventArgs e)
         {
-            ready = false;
-            //Setup brushes
-            Brush numberBrush = new SolidColorBrush(Color.FromArgb(255, 34, 207, 247));
-            Brush operatorBrush = new SolidColorBrush(Color.FromArgb(255, 253, 115, 115));
-
-            //Store content
-            TextRange storedTextContent = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd);
-            string text = storedTextContent.Text;
-
-            if(text != "")
-            {
-       
-                //Remove content
-                inputTextBox.Document.Blocks.Clear();
-
-                for (int i = 0; i < text.Length; i++)
-                {
-                    if (text[i] >= '0' && text[i] <= '9')
-                    {
-                        inputTextBox.Foreground = numberBrush;
-                        
-                    }
-                    else if(text[i] == '+' || text[i] == '=' || text[i] == '-' || text[i] == '*' || text[i] == '/')
-                    {
-                        inputTextBox.Foreground = operatorBrush;
-                    }
-                    else
-                    {
-                        inputTextBox.Foreground = Brushes.Red;
-                    }
-                    inputTextBox.AppendText(text[i].ToString());
-                }
-                
-              
-            }
-            ready = true;
-    
-        }*/
-
-       /* List<Tag> m_tags = new List<Tag>();
-        internal void CheckWordsInRun(Run theRun) //do not hightlight keywords in this method
-        {
-            //How, let's go through our text and save all tags we have to save.               
-            int sIndex = 0;
-            int eIndex = 0;
-
-            for (int i = 0; i < text.Length; i++)
-            {
-                if (Char.IsWhiteSpace(text[i]) | GetSpecials(text[i]))
-                {
-                    if (i > 0 && !(Char.IsWhiteSpace(text[i - 1]) | GetSpecials(text[i - 1])))
-                    {
-                        eIndex = i - 1;
-                        string word = text.Substring(sIndex, eIndex - sIndex + 1);
-                        if (IsKnownTag(word))
-                        {
-                            Tag t = new Tag();
-                            t.StartPosition = theRun.ContentStart.GetPositionAtOffset(sIndex, LogicalDirection.Forward);
-                            t.EndPosition = theRun.ContentStart.GetPositionAtOffset(eIndex + 1, LogicalDirection.Backward);
-                            t.Word = word;
-                            m_tags.Add(t);
-                        }
-                    }
-                    sIndex = i + 1;
-                }
-            }
-            //How this works. But wait. If the word is last word in my text I'll never hightlight it, due I'm looking for separators. Let's add some fix for this case
-            string lastWord = text.Substring(sIndex, text.Length - sIndex);
-            if (IsKnownTag(lastWord))
-            {
-                Tag t = new Tag();
-                t.StartPosition = theRun.ContentStart.GetPositionAtOffset(sIndex, LogicalDirection.Forward);
-                t.EndPosition = theRun.ContentStart.GetPositionAtOffset(text.Length, LogicalDirection.Backward); //fix 1
-                t.Word = lastWord;
-                m_tags.Add(t);
-            }
+            BrushConverter bc = new BrushConverter();
+            ((Label)sender).Background = (Brush)bc.ConvertFrom("#FC427B");
         }
 
-    */
+        /// <summary>
+        /// Changes the color of the button's background to "Ship's Officer" when mouse leaves
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BlackButtonLeave(object sender, MouseEventArgs e)
+        {
+            BrushConverter bc = new BrushConverter();
+            ((Label)sender).Background = (Brush)bc.ConvertFrom("#2C3A47");
+        }
+
+        /// <summary>
+        /// Changes the color of the button's background to "Bluebell" when mouse enters
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PurpleButtonLeave(object sender, MouseEventArgs e)
+        {
+            BrushConverter bc = new BrushConverter();
+            ((Label)sender).Background = (Brush)bc.ConvertFrom("#3B3B98");
+        }
+
+
+
+        /* internal void CreateColorSyntax(RichTextBox textBox)
+         {
+             ready = false;
+             //Setup brushes
+             Brush numberBrush = new SolidColorBrush(Color.FromArgb(255, 34, 207, 247));
+             Brush operatorBrush = new SolidColorBrush(Color.FromArgb(255, 253, 115, 115));
+
+             //Store content
+             TextRange storedTextContent = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd);
+             string text = storedTextContent.Text;
+
+             if(text != "")
+             {
+
+                 //Remove content
+                 inputTextBox.Document.Blocks.Clear();
+
+                 for (int i = 0; i < text.Length; i++)
+                 {
+                     if (text[i] >= '0' && text[i] <= '9')
+                     {
+                         inputTextBox.Foreground = numberBrush;
+
+                     }
+                     else if(text[i] == '+' || text[i] == '=' || text[i] == '-' || text[i] == '*' || text[i] == '/')
+                     {
+                         inputTextBox.Foreground = operatorBrush;
+                     }
+                     else
+                     {
+                         inputTextBox.Foreground = Brushes.Red;
+                     }
+                     inputTextBox.AppendText(text[i].ToString());
+                 }
+
+
+             }
+             ready = true;
+
+         }*/
+
+        /* List<Tag> m_tags = new List<Tag>();
+         internal void CheckWordsInRun(Run theRun) //do not hightlight keywords in this method
+         {
+             //How, let's go through our text and save all tags we have to save.               
+             int sIndex = 0;
+             int eIndex = 0;
+
+             for (int i = 0; i < text.Length; i++)
+             {
+                 if (Char.IsWhiteSpace(text[i]) | GetSpecials(text[i]))
+                 {
+                     if (i > 0 && !(Char.IsWhiteSpace(text[i - 1]) | GetSpecials(text[i - 1])))
+                     {
+                         eIndex = i - 1;
+                         string word = text.Substring(sIndex, eIndex - sIndex + 1);
+                         if (IsKnownTag(word))
+                         {
+                             Tag t = new Tag();
+                             t.StartPosition = theRun.ContentStart.GetPositionAtOffset(sIndex, LogicalDirection.Forward);
+                             t.EndPosition = theRun.ContentStart.GetPositionAtOffset(eIndex + 1, LogicalDirection.Backward);
+                             t.Word = word;
+                             m_tags.Add(t);
+                         }
+                     }
+                     sIndex = i + 1;
+                 }
+             }
+             //How this works. But wait. If the word is last word in my text I'll never hightlight it, due I'm looking for separators. Let's add some fix for this case
+             string lastWord = text.Substring(sIndex, text.Length - sIndex);
+             if (IsKnownTag(lastWord))
+             {
+                 Tag t = new Tag();
+                 t.StartPosition = theRun.ContentStart.GetPositionAtOffset(sIndex, LogicalDirection.Forward);
+                 t.EndPosition = theRun.ContentStart.GetPositionAtOffset(text.Length, LogicalDirection.Backward); //fix 1
+                 t.Word = lastWord;
+                 m_tags.Add(t);
+             }
+         }
+
+     */
     }
 }
