@@ -43,6 +43,7 @@ namespace Calculator
 
 
             Console.WriteLine(text);
+            //Lets go through the whole text, letter by letter
             for(int i = 0; i < text.Length; i++)
             {
                 
@@ -68,7 +69,7 @@ namespace Calculator
                     }
                     w.StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward);
                     w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward);
-                    w.Text = text.Substring(startIndex, endIndex - (startIndex + 1));
+                    w.Text = text.Substring(startIndex, endIndex - startIndex);
 
                     words.Add(w);
 
@@ -77,33 +78,40 @@ namespace Calculator
                 {
                     endIndex = i + 1;
                     //TODO: TEST THIS!!!!
-                    Word w = new Word();
-                    w.StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward);
-                    w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward);
-                    w.Text = text.Substring(startIndex, endIndex - (startIndex + 1));
-                    w.Type = 1;
+                    Word w = new Word
+                    {
+                        StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
+                        EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
+                        Text = text.Substring(startIndex, endIndex - (startIndex + 1)),
+                        Type = 1
+                    };
+                    words.Add(w);
                 }
 
                 else if (text[i] == '!' || text[i] == '^')
                 {
                     endIndex = i + 1;
                     //TODO: TEST THIS!!!!
-                    Word w = new Word();
-                    w.StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward);
-                    w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward);
-                    w.Text = text.Substring(startIndex, endIndex - startIndex + 1);
-                    w.Type = 2;
+                    Word w = new Word
+                    {
+                        StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
+                        EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
+                        Text = text.Substring(startIndex, endIndex - (startIndex + 1)),
+                        Type = 2
+                    };
+                    words.Add(w);
                 }
                 else if((text[i] >= 'A' && text[i] <= 'Z') || (text[i] >= 'a' && text[i] <= 'z'))
                 {
                     Word w = new Word();
-                    if ((i != 0 && !IsOperator(text[i-1])) || (i < text.Length && !IsOperator(text[i + 1]))) {
+                    if ((i != 0 && !IsOperator(text[i-1])) || (i < text.Length - 1 && !IsOperator(text[i + 1]))) {
                         w.Type = -1;
                     }
                     else
                     {
                         w.Type = 4;
                     }
+                    words.Add(w);
                 }
 
                 startIndex = i + 1;
@@ -130,7 +138,7 @@ namespace Calculator
         /// <param name="e"></param>
         private void InputTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string text;
+            string text = "";
             //Input is empty, no need to color anything
             if (inputTextBox.Document == null)
             {
@@ -171,6 +179,47 @@ namespace Calculator
             Brush exponentBrush = new SolidColorBrush(Color.FromArgb(255, 214, 162, 232));
             Brush letterBrush = new SolidColorBrush(Color.FromArgb(255, 27, 156, 252));
             Brush absBrush = new SolidColorBrush(Color.FromArgb(255, 109, 33, 79));
+
+
+            for (int i = 0; i < words.Count; i++)
+            {
+                try
+                {
+                    TextRange range = new TextRange(words[i].StartPos, words[i].EndPos);
+                    
+                    switch (words[i].Type)
+                    {
+                        //Numbers
+                        case 0:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, numberBrush);
+                            break;
+                        //Operators
+                        case 1:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, operatorBrush);
+                            break;
+                        //Special operators
+                        case 2:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, specialOperatorBrush);
+                            break;
+                        //exponents
+                        case 3:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, exponentBrush);
+                            break;
+                        //letters
+                        case 4:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, letterBrush);
+                            break;
+                        //absolute value
+                        case 5:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, absBrush);
+                            break;
+                        default:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
+                            break;
+                    }
+                }
+                catch { }
+            }
 
             //Add back event handler
             inputTextBox.TextChanged += InputTextBox_TextChanged;
