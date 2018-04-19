@@ -55,6 +55,7 @@ namespace Calculator
                     {
                         i++;
                     }
+                    //Go back one item
                     endIndex = i - 1;
                     i--;
 
@@ -104,6 +105,7 @@ namespace Calculator
                 }
                 else if((text[i] >= 'A' && text[i] <= 'Z') || (text[i] >= 'a' && text[i] <= 'z'))
                 {
+                    endIndex = i + 1;
                     Word w = new Word();
                     if ((i != 0 && !IsOperator(text[i-1])) || (i < text.Length - 1 && !IsOperator(text[i + 1]))) {
                         w.Type = -1;
@@ -112,6 +114,18 @@ namespace Calculator
                     {
                         w.Type = 4;
                     }
+                    words.Add(w);
+                }
+                else if (text[i] >= '|')
+                {
+                    endIndex = i + 1;
+                    Word w = new Word
+                    {
+                        StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
+                        EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
+                        Text = text.Substring(startIndex, endIndex - (startIndex + 1)),
+                        Type = 5
+                    };
                     words.Add(w);
                 }
 
