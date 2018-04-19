@@ -1,8 +1,5 @@
-## <img src="https://raw.githubusercontent.com/jakubman1/Calculator/master/src/calculator.ico?token=AjRiP1udCQ4Nj3WHbIGFgik3m0Rps2g5ks5a4ZrOwA%3D%3D" width="25" height="25" /> Projekt 
-- Kalkulačka pro předmět IVS – Praktické aspekty vývoje software
-
 ## Název týmu
-- Team 42
+Team 42
 
 ## Autoři
 - **xtykva00** Jiří Tykva
@@ -23,8 +20,7 @@
 - TODO
 
 ## Licence
-- TODO
-Tento program je poskytovan...
+- Tento program je poskytován pod licencí [GNU GPL v. 3](https://github.com/jakubman1/Calculator/blob/master/LICENSE.md).
 
 ## Commit fix tutorial
 - Oprava chyby commitu, kde se commituje obsah složky .vs: git rm --cached -r src/.vs
