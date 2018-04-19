@@ -133,6 +133,19 @@ namespace Calculator
                     };
                     words.Add(w);
                 }
+                //Other characters
+                else
+                {
+                    endIndex = i + 1;
+                    Word w = new Word
+                    {
+                        StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
+                        EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
+                        Text = text.Substring(startIndex, endIndex - (startIndex + 1)),
+                        Type = -1
+                    };
+                    words.Add(w);
+                }
 
                 startIndex = i + 1;
             }
