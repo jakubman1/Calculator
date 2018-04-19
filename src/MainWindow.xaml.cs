@@ -201,7 +201,25 @@ namespace Calculator
             }
             return false;
         }
-
+        /// <summary>
+        /// Replaces user written input into correct characters
+        /// </summary>
+        /// <param name="inText"></param>
+        /// <returns></returns>
+        string ReplaceOperatorText(string inText)
+        {
+            switch(inText)
+            {
+                case "*":
+                    return "×";
+                case "/":
+                    return "÷";
+                case "**":
+                    return "^";
+                default:
+                    return inText;
+            }
+        }
         /// <summary>
         /// When input text is changed, change colors of text based on syntax
         /// </summary>
