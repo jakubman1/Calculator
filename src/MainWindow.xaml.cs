@@ -55,7 +55,8 @@ namespace Calculator
                     {
                         i++;
                     }
-                    endIndex = i;
+                    endIndex = i - 1;
+                    i--;
 
                     Word w = new Word();
                     //Check if the number is an exponent
