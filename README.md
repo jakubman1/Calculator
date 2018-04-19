@@ -13,23 +13,20 @@
 ## Prostředí
 - Windows 10 - 64bit
 
-# TODO
+# TODO - pamět?
 ## Popis
 - Tento projekt vznikl pro předmět IVS – Praktické aspekty vývoje software.
 - Kalkulačka umí základní matematické operace (+,-,*,/), faktoriál, umocňování s přirozenými exponenty, obecnou odmocninu a absolutní hodnotu.
 - Vstup lze zadávat pomocí tlačítek či klávesnice a zadaný výraz je vhodně obarvován.
 - ? Je podporována pamět. ? 
 
-# TODO
+# TODO – odkaz
 ## Postup instalace
 - Pro přesný postup instalace viz manuál k instalaci. (Odkaz na manuál až bude hotovej)
 
-# TODO
+# TODO – něco navíc?
 ## Jak přispívat
-- **Bug Reports & Feature Requests**  
-  - Please use the issue tracker to report any bugs or file feature requests.
-- **In development**
-  - např. Hex to Bin converter
+- V případě nalezení chyby či požadavku na další funkcionality kontaktujte, prosím, vedoucího týmu: xtykva00@stud.fit.vutbr.cz.
 
 ## Licence
 - Tento program je poskytován pod licencí [GNU GPL v. 3](https://github.com/jakubman1/Calculator/blob/master/LICENSE.md).
