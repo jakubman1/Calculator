@@ -35,6 +35,3 @@
 
 ## Licence
 - Tento program je poskytován pod licencí [GNU GPL v. 3](https://github.com/jakubman1/Calculator/blob/master/LICENSE.md).
-
-## Commit fix tutorial - **SMAZAT**
-- Oprava chyby commitu, kde se commituje obsah složky .vs: git rm --cached -r src/.vs
