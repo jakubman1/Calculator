@@ -42,6 +42,15 @@ namespace Calculator
         List<Word> words = new List<Word>();
         List<MemItem> memory = new List<MemItem>();
 
+        //Setup brushes
+        Brush numberBrush = new SolidColorBrush(Color.FromArgb(255, 34, 207, 247));
+        Brush operatorBrush = new SolidColorBrush(Color.FromArgb(255, 253, 115, 115));
+        Brush specialOperatorBrush = new SolidColorBrush(Color.FromArgb(255, 234, 181, 67));
+        Brush exponentBrush = new SolidColorBrush(Color.FromArgb(255, 214, 162, 232));
+        Brush letterBrush = new SolidColorBrush(Color.FromArgb(255, 27, 156, 252));
+        Brush absBrush = new SolidColorBrush(Color.FromArgb(255, 109, 33, 79));
+        Brush bgBrush = new SolidColorBrush(Color.FromArgb(255, 252, 66, 123));
+
         internal void CheckWords(Run run, string text)
         {
             int startIndex = 0;
@@ -111,6 +120,7 @@ namespace Calculator
                 }
                 else if((text[i] >= 'A' && text[i] <= 'Z') || (text[i] >= 'a' && text[i] <= 'z'))
                 {
+                    //TODO: Odmocnina
                     endIndex = i + 1;
                     Word w = new Word
                     {
@@ -232,13 +242,7 @@ namespace Calculator
             //Remove all whitespace characters from string
             //Regex.Replace(text, @"\s+", ""); //Cant use this, could lead to wrong positions
 
-            //Setup brushes
-            Brush numberBrush = new SolidColorBrush(Color.FromArgb(255, 34, 207, 247));
-            Brush operatorBrush = new SolidColorBrush(Color.FromArgb(255, 253, 115, 115));
-            Brush specialOperatorBrush = new SolidColorBrush(Color.FromArgb(255, 234, 181, 67));
-            Brush exponentBrush = new SolidColorBrush(Color.FromArgb(255, 214, 162, 232));
-            Brush letterBrush = new SolidColorBrush(Color.FromArgb(255, 27, 156, 252));
-            Brush absBrush = new SolidColorBrush(Color.FromArgb(255, 109, 33, 79));
+            
 
 
             for (int i = 0; i < words.Count; i++)
@@ -293,7 +297,6 @@ namespace Calculator
         /// <param name="e"></param>
         private void ButtonEnter(object sender, MouseEventArgs e)
         {
-            Brush bgBrush = new SolidColorBrush(Color.FromArgb(255, 252, 66, 123));
             ((Label)sender).Background = bgBrush;
         }
 
