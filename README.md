@@ -2,7 +2,7 @@
 - Kalkulačka pro IVS – Praktické aspekty vývoje software
 
 ## Název týmu
-Team 42
+- Team 42
 
 ## Autoři
 - **xtykva00** Jiří Tykva
@@ -26,8 +26,12 @@ Team 42
 ## Postup instalace
 - TODO
 
-## ?Jak přispívat?
+## Jak přispívat
 - TODO
+- **Bug Reports & Feature Requests**  
+  - Please use the issue tracker to report any bugs or file feature requests.
+- **In development**
+  - např. Hex to Bin converter
 
 ## Licence
 - Tento program je poskytován pod licencí [GNU GPL v. 3](https://github.com/jakubman1/Calculator/blob/master/LICENSE.md).
