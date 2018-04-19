@@ -272,45 +272,52 @@ namespace Calculator
         /// </summary>
         private void RedrawInput()
         {
-        for (int i = 0; i < words.Count; i++)
-        {
-            try
+            for (int i = 0; i < words.Count; i++)
             {
-                TextRange range = new TextRange(words[i].StartPos, words[i].EndPos);
-
-                switch (words[i].Type)
+                try
                 {
-                    //Numbers
-                    case 0:
-                        range.ApplyPropertyValue(TextElement.ForegroundProperty, numberBrush);
-                        break;
-                    //Operators
-                    case 1:
-                        range.ApplyPropertyValue(TextElement.ForegroundProperty, operatorBrush);
-                        break;
-                    //Special operators
-                    case 2:
-                        range.ApplyPropertyValue(TextElement.ForegroundProperty, specialOperatorBrush);
-                        break;
-                    //exponents
-                    case 3:
-                        range.ApplyPropertyValue(TextElement.ForegroundProperty, exponentBrush);
-                        break;
-                    //letters
-                    case 4:
-                        range.ApplyPropertyValue(TextElement.ForegroundProperty, letterBrush);
-                        break;
-                    //absolute value
-                    case 5:
-                        range.ApplyPropertyValue(TextElement.ForegroundProperty, absBrush);
-                        break;
-                    default:
-                        range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
-                        break;
+                    TextRange range = new TextRange(words[i].StartPos, words[i].EndPos);
+
+                    switch (words[i].Type)
+                    {
+                        //Numbers
+                        case 0:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, numberBrush);
+                            break;
+                        //Operators
+                        case 1:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, operatorBrush);
+                            break;
+                        //Special operators
+                        case 2:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, specialOperatorBrush);
+                            if(words[i].Text == "^")
+                            {
+                                range.ApplyPropertyValue(TextElement.FontSizeProperty, 10.0);
+                                range.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
+                            }
+                            break;
+                        //exponents
+                        case 3:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, exponentBrush);
+                            range.ApplyPropertyValue(TextElement.FontSizeProperty, 30.0);
+                            range.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
+                            break;
+                        //letters
+                        case 4:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, letterBrush);
+                            break;
+                        //absolute value
+                        case 5:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, absBrush);
+                            break;
+                        default:
+                            range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
+                            break;
+                    }
                 }
+                catch { }
             }
-            catch { }
-        }
        }
 
         /// <summary>
