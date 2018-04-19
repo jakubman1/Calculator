@@ -56,7 +56,6 @@ namespace Calculator
             int startIndex = 0;
             int endIndex = 0;
 
-
             Console.WriteLine(text);
             //Lets go through the whole text, letter by letter
             for(int i = 0; i < text.Length; i++)
@@ -230,7 +229,8 @@ namespace Calculator
                     text = ((Run)navigator.Parent).Text;
                     if(text != "" && text.Length != 0)
                     {
-                        CheckWords((Run)navigator.Parent, text);
+                        Run parentRun = (Run)navigator.Parent;
+                        CheckWords(parentRun, text);
                     }
                 }
 
@@ -338,6 +338,12 @@ namespace Calculator
         {
             ButtonPressedEffect(sender, e);
             TextBlockResult.Text = "test 42";
+        }
+
+        private void buttonClear_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            TextBlockResult.Text = "0";
+            inputTextBox.Document.Blocks.Clear();
         }
 
 
