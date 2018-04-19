@@ -34,7 +34,13 @@ namespace Calculator
             public int Type; //0=numbers,1=standard operators,2=special operators,3=exponents,4=letters(memory),5=absolute value, -1=error state
         }
 
+        struct MemItem
+        {
+            public char Letter;
+            public bool Value;
+        }
         List<Word> words = new List<Word>();
+        List<MemItem> memory = new List<MemItem>();
 
         internal void CheckWords(Run run, string text)
         {
@@ -151,12 +157,33 @@ namespace Calculator
             }
         }
 
+        /// <summary>
+        /// Checks if character is a valid operator
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns>True if it is, false if it is not</returns>
         bool IsOperator(char c)
         {
             char[] operators = { '+', '-', '*', '/', '=', '!', '^', '|' };
             for(int i = 0; i < operators.Length; i++)
             {
                 if(c == operators[i])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        /// <summary>
+        /// Checks if letter is a number in memory
+        /// </summary>
+        /// <param name="c">Letter to check</param>
+        /// <returns>True if letter is an item form memory, false otherwise</returns>
+        bool IsInMemory(char c)
+        {
+            for(int i = 0; i < memory.Count; i++)
+            {
+                if (c == memory[i].Letter)
                 {
                     return true;
                 }
