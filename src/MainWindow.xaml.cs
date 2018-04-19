@@ -349,6 +349,23 @@ namespace Calculator
             inputTextBox.Document.Blocks.Clear();
         }
 
+        private void buttonDelete_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if(words.Count() > 0)
+            {
+                buttonDelete.MouseUp -= buttonDelete_MouseUp;
+                inputTextBox.Document.Blocks.Clear();
+                words.RemoveAt(words.Count() - 1);
+                for(int i = 0; i < words.Count; i++)
+                {
+                    inputTextBox.AppendText(words[i].Text);
+                }
+                RedrawInput();
+                buttonDelete.MouseUp += buttonDelete_MouseUp;
+            }
+            
+        }
+
 
 
         /* internal void CreateColorSyntax(RichTextBox textBox)
