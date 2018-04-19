@@ -158,7 +158,7 @@ namespace Calculator
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
                         EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
-                        Text = text.Substring(startIndex, endIndex + 1 - startIndex),
+                        Text = text.Substring(startIndex, endIndex - startIndex),
                         Type = -1
                     };
                     words.Add(w);
