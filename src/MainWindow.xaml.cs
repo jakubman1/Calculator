@@ -56,7 +56,7 @@ namespace Calculator
             int startIndex = 0;
             int endIndex = 0;
 
-            Console.WriteLine(text);
+            //Console.WriteLine(text);
             //Lets go through the whole text, letter by letter
             for(int i = 0; i < text.Length; i++)
             {
@@ -216,6 +216,8 @@ namespace Calculator
             //Remove event handler to prevent infinite loop.
             inputTextBox.TextChanged -= InputTextBox_TextChanged;
 
+            words.Clear();
+
             TextRange documentRange = new TextRange(inputTextBox.Document.ContentStart, inputTextBox.Document.ContentEnd);
             documentRange.ClearAllProperties();
 
@@ -238,57 +240,58 @@ namespace Calculator
       
             }
 
-            //Regex.IsMatch(text,@"regex")
-            //Remove all whitespace characters from string
-            //Regex.Replace(text, @"\s+", ""); //Cant use this, could lead to wrong positions
-
-            
-
-
-            for (int i = 0; i < words.Count; i++)
-            {
-                try
-                {
-                    TextRange range = new TextRange(words[i].StartPos, words[i].EndPos);
-                    
-                    switch (words[i].Type)
-                    {
-                        //Numbers
-                        case 0:
-                            range.ApplyPropertyValue(TextElement.ForegroundProperty, numberBrush);
-                            break;
-                        //Operators
-                        case 1:
-                            range.ApplyPropertyValue(TextElement.ForegroundProperty, operatorBrush);
-                            break;
-                        //Special operators
-                        case 2:
-                            range.ApplyPropertyValue(TextElement.ForegroundProperty, specialOperatorBrush);
-                            break;
-                        //exponents
-                        case 3:
-                            range.ApplyPropertyValue(TextElement.ForegroundProperty, exponentBrush);
-                            break;
-                        //letters
-                        case 4:
-                            range.ApplyPropertyValue(TextElement.ForegroundProperty, letterBrush);
-                            break;
-                        //absolute value
-                        case 5:
-                            range.ApplyPropertyValue(TextElement.ForegroundProperty, absBrush);
-                            break;
-                        default:
-                            range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
-                            break;
-                    }
-                }
-                catch { }
-            }
+            RedrawInput();
 
             //Add back event handler
             inputTextBox.TextChanged += InputTextBox_TextChanged;
 
         }
+
+        /// <summary>
+        /// Redraws input field formatting
+        /// </summary>
+        private void RedrawInput()
+        {
+        for (int i = 0; i < words.Count; i++)
+        {
+            try
+            {
+                TextRange range = new TextRange(words[i].StartPos, words[i].EndPos);
+
+                switch (words[i].Type)
+                {
+                    //Numbers
+                    case 0:
+                        range.ApplyPropertyValue(TextElement.ForegroundProperty, numberBrush);
+                        break;
+                    //Operators
+                    case 1:
+                        range.ApplyPropertyValue(TextElement.ForegroundProperty, operatorBrush);
+                        break;
+                    //Special operators
+                    case 2:
+                        range.ApplyPropertyValue(TextElement.ForegroundProperty, specialOperatorBrush);
+                        break;
+                    //exponents
+                    case 3:
+                        range.ApplyPropertyValue(TextElement.ForegroundProperty, exponentBrush);
+                        break;
+                    //letters
+                    case 4:
+                        range.ApplyPropertyValue(TextElement.ForegroundProperty, letterBrush);
+                        break;
+                    //absolute value
+                    case 5:
+                        range.ApplyPropertyValue(TextElement.ForegroundProperty, absBrush);
+                        break;
+                    default:
+                        range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
+                        break;
+                }
+            }
+            catch { }
+        }
+       }
 
         /// <summary>
         /// Changes the color of the button's background to "Sasquatch Socks" when mouse enters
