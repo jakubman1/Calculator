@@ -1,0 +1,4 @@
+xtykva00 100 (plán projektu, matematická knihovna, úprava testù matematické knihovny, README, Doxyfile, prvky GUI)
+xmanja00 120 (skuteènì øešená èást projektu)
+xholas09 90 (skuteènì øešená èást projektu)
+xslesi02 90 (skuteènì øešená èást projektu)
