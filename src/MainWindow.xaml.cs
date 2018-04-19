@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Text.RegularExpressions;
 
 namespace Calculator
 {
@@ -39,8 +38,8 @@ namespace Calculator
             public char Letter;
             public bool Value;
         }
-        List<Word> words = new List<Word>();
-        List<MemItem> memory = new List<MemItem>();
+        private List<Word> words = new List<Word>();
+        private List<MemItem> memory = new List<MemItem>();
 
         //Setup brushes
         Brush numberBrush = new SolidColorBrush(Color.FromArgb(255, 34, 207, 247));
@@ -73,7 +72,12 @@ namespace Calculator
                     endIndex = i - 1;
                     i--;
 
-                    Word w = new Word();
+                    Word w = new Word
+                    {
+                        StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
+                        EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
+                        Text = text.Substring(startIndex, endIndex + 1 - startIndex)
+                    };
                     //Check if the number is an exponent
                     if (startIndex > 0 && text[startIndex - 1] == '^')
                     {
@@ -83,14 +87,12 @@ namespace Calculator
                     {
                         w.Type = 0;
                     }
-                    w.StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward);
-                    w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward);
-                    w.Text = text.Substring(startIndex, endIndex - startIndex);
+                   
 
                     words.Add(w);
 
                 }
-                else if(text[i] == '+' || text[i] == '-' || text[i] == '*' || text[i] == '/' || text[i] == '=')
+                else if(text[i] == '+' || text[i] == '-' || text[i] == '*' || text[i] == '/' || text[i] == '=' || text[i] == '÷' || text[i] == '×')
                 {
                     endIndex = i + 1;
                     //TODO: TEST THIS!!!!
@@ -98,7 +100,7 @@ namespace Calculator
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
                         EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
-                        Text = text.Substring(startIndex, endIndex - (startIndex + 1)),
+                        Text = ReplaceOperatorText(text.Substring(startIndex, endIndex - startIndex)),
                         Type = 1
                     };
                     words.Add(w);
@@ -112,7 +114,7 @@ namespace Calculator
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
                         EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
-                        Text = text.Substring(startIndex, endIndex - (startIndex + 1)),
+                        Text = ReplaceOperatorText(text.Substring(startIndex, 1)),
                         Type = 2
                     };
                     words.Add(w);
@@ -125,7 +127,7 @@ namespace Calculator
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
                         EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
-                        Text = text.Substring(startIndex, endIndex - (startIndex + 1))
+                        Text = text.Substring(startIndex, 1)
                     };
                     if ((i != 0 && !IsOperator(text[i-1])) || (i < text.Length - 1 && !IsOperator(text[i + 1])) || (!IsInMemory(text[i]) && ((i != 0 && text[i - 1] != '=') || (i < text.Length - 1 && text[i + 1] != '=')))) {
                         w.Type = -1;
@@ -143,7 +145,7 @@ namespace Calculator
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
                         EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
-                        Text = text.Substring(startIndex, endIndex - (startIndex + 1)),
+                        Text = text.Substring(startIndex, 1),
                         Type = 5
                     };
                     words.Add(w);
@@ -156,7 +158,7 @@ namespace Calculator
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
                         EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
-                        Text = text.Substring(startIndex, endIndex - (startIndex + 1)),
+                        Text = text.Substring(startIndex, endIndex + 1 - startIndex),
                         Type = -1
                     };
                     words.Add(w);
@@ -173,7 +175,7 @@ namespace Calculator
         /// <returns>True if it is, false if it is not</returns>
         bool IsOperator(char c)
         {
-            char[] operators = { '+', '-', '*', '/', '=', '!', '^', '|' };
+            char[] operators = { '+', '-', '*', '/', '=', '!', '^', '|', '×', '÷' };
             for(int i = 0; i < operators.Length; i++)
             {
                 if(c == operators[i])
@@ -353,6 +355,7 @@ namespace Calculator
         {
             if(words.Count() > 0)
             {
+                inputTextBox.TextChanged -= InputTextBox_TextChanged;
                 buttonDelete.MouseUp -= buttonDelete_MouseUp;
                 inputTextBox.Document.Blocks.Clear();
                 words.RemoveAt(words.Count() - 1);
@@ -362,6 +365,7 @@ namespace Calculator
                 }
                 RedrawInput();
                 buttonDelete.MouseUp += buttonDelete_MouseUp;
+                inputTextBox.TextChanged += InputTextBox_TextChanged;
             }
             
         }
