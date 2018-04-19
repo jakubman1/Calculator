@@ -1,10 +1,14 @@
-# KALKULAČKA 42
+## Název týmu
+Team 42
 
 ## Autoři
-- Jiří Tykva
-- Jakub Man
-- Jan Holásek
-- Josef Šlesinger
+- xtykva00 Jiří Tykva
+- xmanja00 Jakub Man
+- xholas09 Jan Holásek
+- xslesi02 Josef Šlesinger
+
+## Prostředí
+- Windows 64bit?
 
 ## Popis
 - TODO
@@ -17,6 +21,7 @@
 
 ## Licence
 - TODO
+Tento program je poskytovan...
 
 ## Commit fix tutorial
 - Oprava chyby commitu, kde se commituje obsah složky .vs: git rm --cached -r src/.vs
