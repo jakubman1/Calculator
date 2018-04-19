@@ -11,12 +11,7 @@
 - **xslesi02** Josef Šlesinger
 
 ## Prostředí
-- Windows 7
-- Windows 8
-- Windows 10
-- Windows Server 2003 Service Pack 2
-- Windows Server 2008
-- Windows Server 2008 R2
+- Windows 10 - 64bit
 
 # TODO
 ## Popis
