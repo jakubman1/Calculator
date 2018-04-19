@@ -19,13 +19,15 @@
 - Windows Server 2008 R2
 
 ## Popis
-- TODO
+- Tento projekt vznikl pro předmět IVS – Praktické aspekty vývoje software.
+- Kalkulačka umí základní matematické operace (+,-,*,/), faktoriál, umocňování s přirozenými exponenty, obecnou odmocninu a absolutní hodnotu.
+- Vstup lze zadávat pomocí tlačítek či klávesnice a zadaný výraz je vhodně obarvován.
+- ? Je podporována pamět. ? 
 
 ## Postup instalace
 - TODO
 
-## Jak přispívat
-- TODO
+## TODO Jak přispívat
 - **Bug Reports & Feature Requests**  
   - Please use the issue tracker to report any bugs or file feature requests.
 - **In development**
