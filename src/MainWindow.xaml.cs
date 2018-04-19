@@ -118,7 +118,7 @@ namespace Calculator
                         EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
                         Text = text.Substring(startIndex, endIndex - (startIndex + 1))
                     };
-                    if ((i != 0 && !IsOperator(text[i-1])) || (i < text.Length - 1 && !IsOperator(text[i + 1]))) {
+                    if ((i != 0 && !IsOperator(text[i-1])) || (i < text.Length - 1 && !IsOperator(text[i + 1])) || (!IsInMemory(text[i]) && ((i != 0 && text[i - 1] != '=') || (i < text.Length - 1 && text[i + 1] != '=')))) {
                         w.Type = -1;
                     }
                     else
