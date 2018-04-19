@@ -1,5 +1,5 @@
 ## <img src="https://raw.githubusercontent.com/jakubman1/Calculator/master/src/calculator.ico?token=AjRiP7ct0dToOhJmjQWf8Y8_x3bvkhhqks5a4aamwA%3D%3D" width="25" height="25" /> Projekt
-- Kalkulačka pro IVS – Praktické aspekty vývoje software
+- Kalkulačka 42
 
 ## Název týmu
 - Team 42
@@ -17,8 +17,6 @@
 - Windows Server 2003 Service Pack 2
 - Windows Server 2008
 - Windows Server 2008 R2
-- Windows Vista Service Pack 1
-- Windows XP Service Pack 3
 
 ## Popis
 - TODO
