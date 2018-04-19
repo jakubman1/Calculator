@@ -367,7 +367,18 @@ namespace Calculator
         private void Button42Clicked(object sender, MouseButtonEventArgs e)
         {
             ButtonPressedEffect(sender, e);
-            TextBlockResult.Text = "test 42";
+            inputTextBox.AppendText("42");
+        }
+
+        /// <summary>
+        /// Click handler for buttons, that add their content to the input field.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SimpleButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            BlackButtonLeave(sender, e);
+            inputTextBox.AppendText((string)((Label)sender).Content);
         }
 
         private void buttonClear_MouseUp(object sender, MouseButtonEventArgs e)
