@@ -81,7 +81,7 @@ namespace Calculator
                     };
 
                     //Number can not end with a dot, also you can not divide by zero
-                    if(text[endIndex] == '.' || text[endIndex] == ',' || (i != 0 && text[startIndex - 1] == '÷' && Convert.ToDouble(w.Text) == 0) )
+                    if((text[endIndex] == '.' || text[endIndex] == ',') || (i != 0 && text[startIndex] == '÷' && Convert.ToDouble(w.Text) == 0) )
                     {
                         w.Type = -1;
                     }
