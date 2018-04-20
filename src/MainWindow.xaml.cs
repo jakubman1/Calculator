@@ -101,14 +101,43 @@ namespace Calculator
                 }
                 else if(text[i] == '+' || text[i] == '-' || text[i] == '*' || text[i] == '/' || text[i] == '=' || text[i] == '÷' || text[i] == '×')
                 {
-                    endIndex = i + 1;
+                    //Check for multi-character operator
+                    while (i < text.Length && (text[i] == '+' || text[i] == '-' || text[i] == '*' || text[i] == '/' || text[i] == '=' || text[i] == '÷' || text[i] == '×'))
+                    {
+                        i++;
+                    }
+                    //Go back one item
+                    endIndex = i - 1;
+                    i--;
                     Word w = new Word
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
                         EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
-                        Text = ReplaceOperatorText(text.Substring(startIndex, endIndex - startIndex)),
-                        Type = 1
+                        Text = ReplaceOperatorText(text.Substring(startIndex, endIndex + 1 - startIndex)),
+                        
                     };
+                    //Operator has one character - always correct
+                    if((endIndex + 1 - startIndex) == 1)
+                    {
+                        w.Type = 1;
+                    }
+                    //Operator has two characters - We are replacing the text, if we find ** or ××
+                    else if ((endIndex + 1 - startIndex) == 2)
+                    {
+                        if(w.Text == "^" )
+                        {
+                            w.Type = 2;
+                            //w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex, LogicalDirection.Backward);
+                        }
+                        else
+                        {
+                            w.Type = -1;
+                        }
+                    }
+                    else
+                    {
+                        w.Type = -1;
+                    }
                     words.Add(w);
                 }
 
@@ -219,6 +248,8 @@ namespace Calculator
                     return "×";
                 case "/":
                     return "÷";
+                case "×*":
+                case "××":
                 case "**":
                     return "^";
                 default:
@@ -300,16 +331,25 @@ namespace Calculator
                             {
                                 range.Text = "÷";
                             }
+                           
                             range.ApplyPropertyValue(TextElement.ForegroundProperty, operatorBrush);
                             break;
                         //Special operators
                         case 2:
-                            range.ApplyPropertyValue(TextElement.ForegroundProperty, specialOperatorBrush);
-                            if(words[i].Text == "^")
+                            
+                            if (words[i].Text == "^")
                             {
+                                if (range.Text == "**" || range.Text == "××" || range.Text == "×*")
+                                {
+                                    range.Text = "^";
+                                }
                                 range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                                 range.ApplyPropertyValue(TextElement.FontSizeProperty, 10.0);
                                 range.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
+                            }
+                            else
+                            {
+                                range.ApplyPropertyValue(TextElement.ForegroundProperty, specialOperatorBrush);
                             }
                             break;
                         //exponents
@@ -328,6 +368,7 @@ namespace Calculator
                             break;
                         default:
                             range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Red);
+                            range.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Baseline);
                             break;
                     }
                 }
