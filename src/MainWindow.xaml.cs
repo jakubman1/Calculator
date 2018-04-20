@@ -307,6 +307,7 @@ namespace Calculator
             //Input is empty, no need to color anything
             if (inputTextBox.Document == null)
             {
+                TextBlockResult.Text = "0";
                 return;
             }
             //Remove event handler to prevent infinite loop.
