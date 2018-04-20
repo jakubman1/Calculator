@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
-        Title="Kalkulačka 42" Height="360" Width="760" Background="#FFF2F2F2" MinHeight="360" MinWidth="760" MaxWidth="760" MaxHeight="360" Icon="calculator.png">
+        Title="Kalkulačka 42" Height="360" Width="760" Background="#FFF2F2F2" MinHeight="360" MinWidth="760" MaxWidth="760" MaxHeight="360" Icon="calculator.png" ResizeMode="CanMinimize">
     <Grid>
         <RichTextBox x:Name="inputTextBox" Margin="10,117,0,0" TextChanged="InputTextBox_TextChanged" HorizontalAlignment="Left" Width="497" Height="192" VerticalAlignment="Top">
             <FlowDocument FontSize="50">
