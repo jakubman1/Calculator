@@ -141,7 +141,7 @@ namespace Calculator
                     words.Add(w);
                 }
 
-                else if (text[i] == '!' || text[i] == '^')
+                else if (text[i] == '!' || text[i] == '^' || text[i] == '√')
                 {
                     endIndex = i + 1;
                     Word w = new Word
@@ -155,21 +155,43 @@ namespace Calculator
                 }
                 else if((text[i] >= 'A' && text[i] <= 'Z') || (text[i] >= 'a' && text[i] <= 'z'))
                 {
-                    //TODO: Odmocnina
-                    endIndex = i + 1;
+                    //Check for the whole text
+                    while (i < text.Length && ((text[i] >= 'A' && text[i] <= 'Z') || (text[i] >= 'a' && text[i] <= 'z')))
+                    {
+                        i++;
+                    }
+                    //Go back one item
+                    endIndex = i - 1;
+                    i--;
                     Word w = new Word
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
                         EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
-                        Text = text.Substring(startIndex, 1)
+                        Text = text.Substring(startIndex, endIndex + 1 - startIndex)
                     };
-                    if ((i != 0 && !IsOperator(text[i-1])) || (i < text.Length - 1 && !IsOperator(text[i + 1])) || (!IsInMemory(text[i]) && ((i != 0 && text[i - 1] != '=') || (i < text.Length - 1 && text[i + 1] != '=')))) {
-                        w.Type = -1;
-                    }
-                    else
+                    switch(w.Text.ToLower())
                     {
-                        w.Type = 4;
+                        case "root":
+                        case "sqrt":
+                            w.Type = 2;
+                            w.Text = "√";
+                            break;
+                        case "pow":
+                            w.Type = 2;
+                            w.Text = "^";
+                            break;   
+                        default:
+                            if ((i != 0 && !IsOperator(text[i - 1])) || (i < text.Length - 1 && !IsOperator(text[i + 1])) || (!IsInMemory(text[i]) && ((i != 0 && text[i - 1] != '=') || (i < text.Length - 1 && text[i + 1] != '='))))
+                            {
+                                w.Type = -1;
+                            }
+                            else
+                            {
+                                w.Type = 4;
+                            }
+                            break;
                     }
+                    
                     words.Add(w);
                 }
                 else if (text[i] >= '|')
@@ -209,8 +231,8 @@ namespace Calculator
         /// <returns>True if it is, false if it is not</returns>
         bool IsOperator(char c)
         {
-            char[] operators = { '+', '-', '*', '/', '=', '!', '^', '|', '×', '÷' };
-            for(int i = 0; i < operators.Length; i++)
+            char[] operators = { '+', '-', '*', '/', '=', '!', '^', '|', '×', '÷', '√' };
+            for (int i = 0; i < operators.Length; i++)
             {
                 if(c == operators[i])
                 {
@@ -339,13 +361,21 @@ namespace Calculator
                             
                             if (words[i].Text == "^")
                             {
-                                if (range.Text == "**" || range.Text == "××" || range.Text == "×*")
+                                if (range.Text == "**" || range.Text == "××" || range.Text == "×*" || range.Text.ToLower() == "pow")
                                 {
                                     range.Text = "^";
                                 }
                                 range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                                 range.ApplyPropertyValue(TextElement.FontSizeProperty, 10.0);
                                 range.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
+                            }
+                            else if(words[i].Text == "√")
+                            {
+                                if(range.Text.ToLower() == "sqrt" || range.Text.ToLower() == "root")
+                                {
+                                    range.Text = "√";    
+                                }
+                                range.ApplyPropertyValue(TextElement.ForegroundProperty, specialOperatorBrush);
                             }
                             else
                             {
