@@ -9,14 +9,16 @@ namespace Calculator
     class ExpressionNode
     {
         public string value;
+        public int id;
         public ExpressionNode left, right, parent;
 
         //Node constructor
-        public ExpressionNode(string value, ExpressionNode parent = null)
+        public ExpressionNode(string value, int id = 0, ExpressionNode parent = null)
         {
             this.value = value;
             left = null;
             right = null;
+            this.id = id;
             this.parent = parent;
         }
     }
@@ -41,9 +43,9 @@ namespace Calculator
         /// <param name="value">Value of a node</param>
         /// <param name="parent">Parent node. Can be null to set as root.</param>
         /// <returns>Newly created node or null, if creation failed.</returns>
-        public ExpressionNode Insert(string value, ExpressionNode parent)
+        public ExpressionNode Insert(string value, int id ,ExpressionNode parent)
         {
-            ExpressionNode node = new ExpressionNode(value, parent);
+            ExpressionNode node = new ExpressionNode(value, id, parent);
             if (root == null)
             {
                 root = node;
