@@ -78,8 +78,15 @@ namespace Calculator
                         EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
                         Text = text.Substring(startIndex, endIndex + 1 - startIndex)
                     };
+
+                    //Number can not end with a dot
+                    if(text[endIndex] == '.' || text[endIndex] == ',')
+                    {
+                        w.Type = -1;
+                    }
+                
                     //Check if the number is an exponent
-                    if (startIndex > 0 && text[startIndex - 1] == '^')
+                    else if (startIndex > 0 && text[startIndex - 1] == '^')
                     {
                         w.Type = 3;
                     }
@@ -95,7 +102,6 @@ namespace Calculator
                 else if(text[i] == '+' || text[i] == '-' || text[i] == '*' || text[i] == '/' || text[i] == '=' || text[i] == '÷' || text[i] == '×')
                 {
                     endIndex = i + 1;
-                    //TODO: TEST THIS!!!!
                     Word w = new Word
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
@@ -109,7 +115,6 @@ namespace Calculator
                 else if (text[i] == '!' || text[i] == '^')
                 {
                     endIndex = i + 1;
-                    //TODO: TEST THIS!!!!
                     Word w = new Word
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
