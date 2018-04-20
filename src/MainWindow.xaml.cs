@@ -235,7 +235,7 @@ namespace Calculator
             }
             //Remove event handler to prevent infinite loop.
             inputTextBox.TextChanged -= InputTextBox_TextChanged;
-
+            
             words.Clear();
 
             TextRange documentRange = new TextRange(inputTextBox.Document.ContentStart, inputTextBox.Document.ContentEnd);
@@ -253,13 +253,14 @@ namespace Calculator
                     {
                         Run parentRun = (Run)navigator.Parent;
                         CheckWords(parentRun, text);
+                        
                     }
                 }
 
                 navigator = navigator.GetNextContextPosition(LogicalDirection.Forward);
       
             }
-
+            
             RedrawInput();
 
             //Add back event handler
@@ -286,6 +287,14 @@ namespace Calculator
                             break;
                         //Operators
                         case 1:
+                            if (range.Text == "*")
+                            {
+                                range.Text = "×";
+                            }
+                            else if (range.Text == "/")
+                            {
+                                range.Text = "÷";
+                            }
                             range.ApplyPropertyValue(TextElement.ForegroundProperty, operatorBrush);
                             break;
                         //Special operators
@@ -293,6 +302,7 @@ namespace Calculator
                             range.ApplyPropertyValue(TextElement.ForegroundProperty, specialOperatorBrush);
                             if(words[i].Text == "^")
                             {
+                                range.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                                 range.ApplyPropertyValue(TextElement.FontSizeProperty, 10.0);
                                 range.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
                             }
@@ -367,8 +377,9 @@ namespace Calculator
         private void Button42Clicked(object sender, MouseButtonEventArgs e)
         {
             ButtonPressedEffect(sender, e);
-            inputTextBox.AppendText("42");
+            //inputTextBox.AppendText("42");
         }
+
 
         /// <summary>
         /// Click handler for buttons, that add their content to the input field.
@@ -377,9 +388,10 @@ namespace Calculator
         /// <param name="e"></param>
         private void SimpleButtonClicked(object sender, MouseButtonEventArgs e)
         {
-            BlackButtonLeave(sender, e);
+            ButtonEnter(sender, e);
             inputTextBox.AppendText((string)((Label)sender).Content);
         }
+
 
         private void buttonClear_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -402,9 +414,11 @@ namespace Calculator
                 RedrawInput();
                 buttonDelete.MouseUp += buttonDelete_MouseUp;
                 inputTextBox.TextChanged += InputTextBox_TextChanged;
+                inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
             }
             
         }
+
 
 
 
