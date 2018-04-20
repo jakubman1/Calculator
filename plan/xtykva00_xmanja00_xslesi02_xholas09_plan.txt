@@ -1,0 +1,78 @@
+PLÁN
+
+Úkoly:
+Jakub Man (xmanja00):
+- vypracování mockupu
+- testy pro matematickou knihovnu
+- snímek obrazovky programu
+- snímek obrazovky debuggeru v matematické knihovnì
+- tvorba prezentace
+Jiøí Tykva (xtykva00):
+- napsat plán projektu
+- odevzdávat soubory ve wisu
+- README.md
+- soubor odevzdani.txt
+- matematická knihovna
+Jan Holásek (xholas09):
+- testy pro matematickou knihovnu
+- kontrola správnosti testù
+- instalátor/odinstalátor programu
+- Makefile
+Josef Šlesinger (xslesi02):
+- uživatelská pøíruèka
+- manuál k instalaci/odinstalaci
+- profiling + informace o provedeném profilingu (v .txt, .pdf èi obrázku)
+Všichni:
+- návrh mockupu
+- soupis hodnoceni.txt
+- soupis skutecnost.txt
+- soupis xloginNN_problemy.txt
+- kontrola uživatelské pøíruèky
+- psání kódu
+- Doxyfile
+- programová dokumentace
+- instalace u zákazníka
+- obhajoba
+- kontrola ostatních
+
+Termíny:
+- 15.3. testy pro matematickou knihovnu
+- 19.3. kontrola správnosti testù
+- 20.3. plán projektu
+- 25.3. základní prvky uživatelského rozhraní
+- 1.4. matematická knihovna
+- 8.4. Formátování vstupního pole
+- 8.4. pokroèilé prvky UI
+- 8.4. kontrola matematické knihovny
+- 15.4. dokonèení práce na funkcích
+- 15.4. výber smìrodatné odchylky pomocí knihovny
+- 15.4. Makefile
+- 15.4. README.md
+- 24.4. odevzdání dokonèené kalkulaèky
+- 24.4. instalátor programu
+- 24.4. snímek obrazovky programu
+- 24.4. snímek obrazovky debuggeru èi popisu pustupu debuggingu
+- 24.4. mockup(y) další verze kalkulaèky
+- 24.4. protokol obsahující výstup profileru a struèné shrnutí
+- 24.4. programová dokumentace
+- 24.4. hodnocení projektu
+- 24.4. soubor skutecnost.txt
+- 24.4. soubor odevzdani.txt
+- 24.4. uživatelská pøíruèka
+- 24.4. manuál k instalaci/odinstalaci
+- 30.4. soubor xloginNN_problemy.txt
+- (období mezi odevzdáním a obhajobami) instalace u zákazníka
+- (den pøed obhajobou) prezentace
+- (bìhem zkouškového období) obhajoba
+
+Komunikaèní kanály: Facebook, Trello, telefon
+
+Pravidla pro komunikaci (pro Trello):
+Dotazy zapisovat do sloupce Dotazy a diskuse.
+Vyøešené dotazy jsou pøesunuty do sloupce Dotazy - archiv
+Pokud øešíte úkol ze sloupce úkoly, pøesuòte si kartu do svého sloupce, po dokonèení ji pøesuòte do sloupce *hotovo* (pokud nemá pøiložený soubor)
+Pokud øešíte úkol ze sloupce úkoly, pøesuòte si kartu do svého sloupce, po dokonèení ji pøesuòte do sloupce *hotovo* (pokud nemá pøiložený soubor)
+
+Systém pro správu verzí: Git
+Systém pro správu hosting: Github
+
