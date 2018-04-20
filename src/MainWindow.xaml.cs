@@ -496,7 +496,40 @@ namespace Calculator
         }
 
 
+        /// <summary>
+        /// Returns index of a word, that has item as its Text parameter
+        /// </summary>
+        /// <param name="item">Item to find</param>
+        /// <param name="list">List to find items from</param>
+        /// <returns>Index in words or -1 if item was not found</returns>
+        private int GetItemIndex(string item, List<Word> list)
+        {
+            for(int i = 0; i < words.Count(); i++)
+            {
+                if(list[i].Text == item) {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
+        /// <summary>
+        /// Returns index of a first word, that has type as its Type parameter
+        /// </summary>
+        /// <param name="type">Type to find</param>
+        /// <param name="list">List to find items from</param>
+        /// <returns>Index of first occurence of item with given type</returns>
+        private int GetItemIndex(int type, List<Word> list)
+        {
+            for (int i = 0; i < list.Count(); i++)
+            {
+                if (list[i].Type == type)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
         /* internal void CreateColorSyntax(RichTextBox textBox)
          {
