@@ -321,6 +321,20 @@ namespace Calculator
             
             RedrawInput();
 
+            if(words.Count() > 0)
+            {
+                if (GetItemIndex(-1, words) != -1)
+                {
+                    TextBlockResult.Text = "Chyba";
+                }
+                else
+                {
+                    TextBlockResult.Text = Solve(WordToStringList(words));
+                }
+            }
+            
+
+
             //Add back event handler
             inputTextBox.TextChanged += InputTextBox_TextChanged;
 
@@ -495,6 +509,26 @@ namespace Calculator
             
         }
 
+        private List<string> WordToStringList(List<Word> list)
+        {
+            List<string> result = new List<string>();
+            for(int i = 0; i < list.Count(); i++)
+            {
+                result.Add(list[i].Text);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Solve equation from a list of strings. Each string should represent one operator or operand.
+        /// </summary>
+        /// <returns>Result of an equation as a string. Can return non-numeric value on error.</returns>
+        private string Solve(List<string> list)
+        {
+            
+            return "0";
+        }
 
         /// <summary>
         /// Returns index of a word, that has item as its Text parameter
@@ -502,11 +536,23 @@ namespace Calculator
         /// <param name="item">Item to find</param>
         /// <param name="list">List to find items from</param>
         /// <returns>Index in words or -1 if item was not found</returns>
-        private int GetItemIndex(string item, List<Word> list)
+        private int GetItemIndex(string item, List<string> list)
         {
             for(int i = 0; i < words.Count(); i++)
             {
-                if(list[i].Text == item) {
+                if(list[i] == item) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private int GetItemIndex(string item, List<Word> list)
+        {
+            for (int i = 0; i < words.Count(); i++)
+            {
+                if (list[i].Text == item)
+                {
                     return i;
                 }
             }
