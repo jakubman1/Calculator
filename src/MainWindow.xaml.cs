@@ -79,8 +79,8 @@ namespace Calculator
                         Text = text.Substring(startIndex, endIndex + 1 - startIndex)
                     };
 
-                    //Number can not end with a dot
-                    if(text[endIndex] == '.' || text[endIndex] == ',')
+                    //Number can not end with a dot, also you can not divide by zero
+                    if(text[endIndex] == '.' || text[endIndex] == ',' || (i != 0 && text[startIndex - 1] == '÷' && Convert.ToDouble(w.Text) == 0) )
                     {
                         w.Type = -1;
                     }
@@ -323,8 +323,10 @@ namespace Calculator
 
             if(words.Count() > 0)
             {
+
                 if (GetItemIndex(-1, words) != -1)
                 {
+                    //There was an error in the input, equation can not be solved
                     TextBlockResult.Text = "Chyba";
                 }
                 else
@@ -509,6 +511,11 @@ namespace Calculator
             
         }
 
+        /// <summary>
+        /// Convert list of words into list of strings, where list.Text will be inserted into result list.
+        /// </summary>
+        /// <param name="list">List of words to convert</param>
+        /// <returns>List of strings</returns>
         private List<string> WordToStringList(List<Word> list)
         {
             List<string> result = new List<string>();
