@@ -29,6 +29,11 @@ namespace Calculator
         {
             root = null;
         }
+        
+        public ExpressionNode GetRoot()
+        {
+            return root;
+        }
 
         /// <summary>
         /// Insert node with a value after another node in tree.
