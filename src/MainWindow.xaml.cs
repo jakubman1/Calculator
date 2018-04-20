@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MathLibrary;
 
 namespace Calculator
 {
@@ -36,7 +37,7 @@ namespace Calculator
         struct MemItem
         {
             public char Letter;
-            public bool Value;
+            public double Value;
         }
         private List<Word> words = new List<Word>();
         private List<MemItem> memory = new List<MemItem>();
@@ -257,6 +258,23 @@ namespace Calculator
             }
             return false;
         }
+
+        /// <summary>
+        /// Gets value from memory by a letter.
+        /// </summary>
+        /// <param name="c">Letter to find</param>
+        /// <returns>Value of memory item. NaN if memory item was not found</returns>
+        double GetFromMemory(char c)
+        {
+            for(int i = 0; i < memory.Count; i++)
+            {
+                if (c == memory[i].Letter)
+                {
+                    return memory[i].Value;
+                }
+            }
+            return Double.NaN;
+        }
         /// <summary>
         /// Replaces user written input into correct characters
         /// </summary>
@@ -327,11 +345,22 @@ namespace Calculator
                 if (GetItemIndex(-1, words) != -1)
                 {
                     //There was an error in the input, equation can not be solved
-                    TextBlockResult.Text = "Chyba";
+                    //TextBlockResult.Text = "Chyba";
                 }
                 else
                 {
-                    TextBlockResult.Text = Solve(WordToStringList(words));
+                    
+                    string result = Solve(WordToNodeList(words));
+                    
+                    if (result == "" || (result.Length >= 3 && result.Substring(0,3) == "err"))
+                    {
+                        
+                    }
+                    else
+                    {
+                        TextBlockResult.Text = result;
+                    }
+                    
                 }
             }
             
@@ -516,12 +545,14 @@ namespace Calculator
         /// </summary>
         /// <param name="list">List of words to convert</param>
         /// <returns>List of strings</returns>
-        private List<string> WordToStringList(List<Word> list)
+        private List<ExpressionNode> WordToNodeList(List<Word> list)
         {
-            List<string> result = new List<string>();
+            List<ExpressionNode> result = new List<ExpressionNode>();
             for(int i = 0; i < list.Count(); i++)
             {
-                result.Add(list[i].Text);
+                
+                ExpressionNode en = new ExpressionNode(list[i].Text);
+                result.Add(en);
             }
 
             return result;
@@ -529,12 +560,143 @@ namespace Calculator
 
         /// <summary>
         /// Solve equation from a list of strings. Each string should represent one operator or operand.
+        /// Error strings signify, that something happened during computing. If you see no exception in stdout, 
+        /// one of operands was probably wrong.
+        /// Error strings (check stdout for detailed error):
+        /// "errFact" => factorial error (possibly overflow or wrong operand)
+        /// "errPow" => pow error (possibly one of operands is wrong
+        ///  "" => other error 
         /// </summary>
-        /// <returns>Result of an equation as a string. Can return non-numeric value on error.</returns>
-        private string Solve(List<string> list)
+        /// <returns>Result of an equation as a string. Returns error string on error</returns>
+        private string Solve(List<ExpressionNode> list)
         {
-            
-            return "0";
+
+            int idx;
+            int startAt = 0;
+
+            //We are solving the equation from the most significant operators 
+            //we don't have to solve numbers, as they won't create trees and are already nodes.
+
+            //Factorial --------------------------------------------
+            while ((idx = GetItemIndex("!", list, startAt)) != -1)
+            {
+                //To find the next item
+                startAt = idx + 1;
+                //Create subtree
+                if (idx > 0)
+                {
+                    //Set parent to previous node/subtree
+                    list[idx - 1].parent = list[idx];
+                    //Set number/subtree as a child of operator node
+                    list[idx].left = list[idx - 1];
+                    //Change reference, so other operators would detect this whole subtree and use it.
+                    FillSubreeWithNodes(list, list[idx], list[idx - 1]);
+                    try
+                    {
+                        //Calculate the value of the currently created subtree, so we don't have to do it later.
+                        list[idx].value = Convert.ToString(MathLibrary.Math.Factorial(Convert.ToInt32(list[idx].left.value)));
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        return "errFact";
+                    }
+                   
+                }
+                else
+                {
+                    return "errFact"; //Chyba
+                }
+            }
+
+            //Pow function ----------------------------------------
+            while ((idx = GetItemIndex("^", list, startAt)) != -1)
+            {
+                //To find the next item
+                startAt = idx + 1;
+                //Create subtree
+                if(idx > 0)
+                {
+                    //Set parent to previous node/subtree
+                    list[idx - 1].parent = list[idx];
+                    //Set number/subtree as a child of operator node
+                    list[idx].left = list[idx - 1];
+                    //Change reference, so other operators would detect this whole subtree and use it.
+                    FillSubreeWithNodes(list, list[idx], list[idx - 1]);
+                }
+                else
+                {
+                    return "errPow";
+                }
+                if(idx < list.Count() - 1)
+                {
+                    //Set parent to previous node/subtree
+                    list[idx + 1].parent = list[idx];
+                    //Set number/subtree as a child of operator node
+                    list[idx].right = list[idx + 1];
+                    //Change reference, so other operators would detect this whole subtree and use it.
+                    FillSubreeWithNodes(list, list[idx], list[idx + 1]);
+                }
+                else
+                {
+                    return "errPow";
+                }
+                try
+                {
+                    list[idx].value = Convert.ToString(MathLibrary.Math.Pow(Convert.ToDouble(list[idx].left.value), Convert.ToInt32(list[idx].right.value)));
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return "errPow";
+                }
+
+            } 
+
+            return list[0].value;
+            /*//We will do recursive solving, tempList will hold partialy solved equation, until there is only one string
+            List<string> tempList = new List<string>();
+            int idx;
+            //Mame pouze jeden prvek, vratime jej
+            if(list.Count() == 1)
+            {
+                return list[0];
+            }
+            else
+            {
+                //Prvni resime mocniny
+                while((idx = GetItemIndex("^", list)) != -1)
+                {
+                    try
+                    {
+                        tempList.Add(Convert.ToString(MathLibrary.Math.Pow(Convert.ToDouble(list[idx - 1]), Convert.ToInt32(list[idx + 1]))));
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e);
+                        return "";
+                    }
+
+                }
+                return "";
+            }*/
+        }
+
+        /// <summary>
+        /// Changes all nodes in a list that match the node "subtree" to node "to"
+        /// </summary>
+        /// <param name="list">List to change</param>
+        /// <param name="to">Node to replace subtree with</param>
+        /// <param name="subtree">Subtree to replace</param>
+       private void FillSubreeWithNodes(List<ExpressionNode> list, ExpressionNode to, ExpressionNode subtree)
+        {
+            for(int i = 0; i < list.Count(); i++)
+            {
+                if(list[i] == subtree)
+                {
+                    list[i] = to;
+                }
+            }
         }
 
         /// <summary>
@@ -542,12 +704,33 @@ namespace Calculator
         /// </summary>
         /// <param name="item">Item to find</param>
         /// <param name="list">List to find items from</param>
+        /// <param name="startAt">Index to start searching at</param>
         /// <returns>Index in words or -1 if item was not found</returns>
-        private int GetItemIndex(string item, List<string> list)
+        private int GetItemIndex(string item, List<string> list, int startAt = 0)
         {
-            for(int i = 0; i < words.Count(); i++)
+            for (int i = startAt; i < words.Count(); i++)
             {
-                if(list[i] == item) {
+                if (list[i] == item)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Returns index of a word, that has item as its value parameter
+        /// </summary>
+        /// <param name="item">Item to find</param>
+        /// <param name="list">List to find items from</param>
+        /// <param name="startAt">Index to start searching at</param>
+        /// <returns>Index in words or -1 if item was not found</returns>
+        private int GetItemIndex(string item, List<ExpressionNode> list, int startAt = 0)
+        {
+            for (int i = startAt; i < words.Count(); i++)
+            {
+                if (list[i].value == item)
+                {
                     return i;
                 }
             }
