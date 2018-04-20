@@ -635,7 +635,7 @@ namespace Calculator
                     //Set number/subtree as a child of operator node
                     list[idx].right = list[idx + 1];
                     //Change reference, so other operators would detect this whole subtree and use it.
-                    FillSubreeWithNodes(list, list[idx], list[idx + 1]);
+                    FillSubtreeWithNodes(list, list[idx], list[idx + 1]);
                 }
                 else
                 {
