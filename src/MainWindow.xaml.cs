@@ -571,253 +571,97 @@ namespace Calculator
         /// <returns>Result of an equation as a string. Returns error string on error</returns>
         private string Solve(List<ExpressionNode> list)
         {
-            //TODO: Make universal function for solving equations
-                int idx;
-                int startAt = 0;
+            int idx;
+            int startAt = 0;
 
-                //We are solving the equation from the most significant operators 
-                //we don't have to solve numbers, as they won't create trees and are already nodes.
+            //We are solving the equation from the most significant operators 
+            //we don't have to solve numbers, as they won't create trees and are already nodes.
 
-            
-
-                //Factorial --------------------------------------------
-                while ((idx = GetItemIndex("!", list, startAt)) != -1)
+            //Factorial --------------------------------------------
+            while ((idx = GetItemIndex("!", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if(SolveOperator(ref list, idx, f: MathLibrary.Math.Factorial) == Double.NaN)
                 {
-                    //To find the next item
-                    startAt = idx + 1;
-                    /* //Prevent reading outside of the list
-                     if (idx > 0)
-                     {
-                         double result = SolveOperator("!", Convert.ToDouble(list[idx - 1].value));
-                         if (result != Double.NaN)
-                         {
-                             list[idx].value = Convert.ToString(result);
-                             list[idx - 1].value = list[idx].value;
-                         }
-                         else
-                         {
-                             return "errFact";
-                         }
-                     }
-                     else
-                     {
-                         return "errFact";
-                     }*/
-
-                    //Create subtree
-                    if (idx > 0)
-                    {
-                        //Set parent to previous node/subtree
-                        list[idx - 1].parent = list[idx];
-                        //Set number/subtree as a child of operator node
-                        list[idx].left = list[idx - 1];
-                        //Change reference, so other operators would detect this whole subtree and use it.
-                        FillSubtreeWithNodes(list, list[idx], list[idx - 1]);
-                        try
-                        {
-                            //Calculate the value of the currently created subtree, so we don't have to do it later.
-                            ExpressionNode oldValue = list[idx];
-                            list[idx].value = Convert.ToString(MathLibrary.Math.Factorial(Convert.ToInt32(list[idx].left.value)));
-                            FillSubtreeWithNodes(list, list[idx], oldValue);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                            return "errFact";
-                        }
-
-                    }
-                    else
-                    {
-                        return "errFact"; //Chyba
-                    }
+                    return "errFact";
                 }
+            }
+
+            //Pow function ----------------------------------------
             startAt = 0;
-                //Pow function ----------------------------------------
-                while ((idx = GetItemIndex("^", list, startAt)) != -1)
+            while ((idx = GetItemIndex("^", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if(SolveOperator(ref list, idx, f: MathLibrary.Math.Pow) == Double.NaN)
                 {
-                    //To find the next item
-                    startAt = idx + 1;
-                    //Create subtree
-                    if (idx > 0)
-                    {
-                        //Set parent to previous node/subtree
-                        list[idx - 1].parent = list[idx];
-                        //Set number/subtree as a child of operator node
-                        list[idx].left = list[idx - 1];
-                        //Change reference, so other operators would detect this whole subtree and use it.
-                        FillSubtreeWithNodes(list, list[idx], list[idx - 1]);
-                    }
-                    else
-                    {
-                        return "errPow";
-                    }
-                    if (idx < list.Count() - 1)
-                    {
-                        //Set parent to previous node/subtree
-                        list[idx + 1].parent = list[idx];
-                        //Set number/subtree as a child of operator node
-                        list[idx].right = list[idx + 1];
-                        //Change reference, so other operators would detect this whole subtree and use it.
-                        FillSubtreeWithNodes(list, list[idx], list[idx + 1]);
-                    }
-                    else
-                    {
-                        return "errPow";
-                    }
-                    try
-                    {
-                        ExpressionNode oldValue = list[idx];
-                        list[idx].value = Convert.ToString(MathLibrary.Math.Pow(Convert.ToDouble(list[idx].left.value), Convert.ToInt32(list[idx].right.value)));
-                        FillSubtreeWithNodes(list, list[idx], oldValue);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        return "errPow";
-                    }
-
+                    return "errPow";
                 }
+            }
 
             startAt = 0;
             //Root function ----------------------------------------
             while ((idx = GetItemIndex("√", list, startAt)) != -1)
             {
-                Console.WriteLine("Got to sqrt");
-                //To find the next item
                 startAt = idx + 1;
-                //Create subtree
-                if (idx > 0)
+                if (SolveOperator(ref list, idx, f: MathLibrary.Math.Root, reverseOrder: true) == Double.NaN)
                 {
-                    //Set parent to previous node/subtree
-                    list[idx - 1].parent = list[idx];
-                    //Set number/subtree as a child of operator node
-                    list[idx].left = list[idx - 1];
-                    //Change reference, so other operators would detect this whole subtree and use it.
-                    FillSubtreeWithNodes(list, list[idx], list[idx - 1]);
-                }
-                else
-                {
-                    return "errSqrt";
-                }
-                if (idx < list.Count() - 1)
-                {
-                        //Set parent to previous node/subtree
-                        list[idx + 1].parent = list[idx];
-                        //Set number/subtree as a child of operator node
-                        list[idx].right = list[idx + 1];
-                        //Change reference, so other operators would detect this whole subtree and use it.
-                        FillSubtreeWithNodes(list, list[idx], list[idx + 1]);
-                }
-                else
-                {
-                        return "errSqrt";
-                }
-                try
-                {
-                        ExpressionNode oldValue = list[idx];
-                        list[idx].value = Convert.ToString(MathLibrary.Math.Root(Convert.ToDouble(list[idx].right.value), Convert.ToInt32(list[idx].left.value)));
-                        FillSubtreeWithNodes(list, list[idx], oldValue);
-                }
-                catch (Exception e)
-                {
-                        Console.WriteLine(e.Message);
-                        return "errSqrt";
+                    return "errRoot";
                 }
 
-             }
+            }
+
             startAt = 0;
-                //Divide function ----------------------------------------
-                while ((idx = GetItemIndex("÷", list, startAt)) != -1)
+            //Divide function ----------------------------------------
+            while ((idx = GetItemIndex("÷", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if (SolveOperator(ref list, idx, f: MathLibrary.Math.Divide) == Double.NaN)
                 {
-                    //To find the next item
-                    startAt = idx + 1;
-                    //Create subtree
-                    if (idx > 0 && idx < list.Count() - 1)
-                    {
-                        //Set parent to previous node/subtree
-                        list[idx - 1].parent = list[idx];
-                        //Set number/subtree as a child of operator node
-                        list[idx].left = list[idx - 1];
-                        //Change reference, so other operators would detect this whole subtree and use it.
-                        FillSubtreeWithNodes(list, list[idx], list[idx - 1]);
-
-                        //Set parent to previous node/subtree
-                        list[idx + 1].parent = list[idx];
-                        //Set number/subtree as a child of operator node
-                        list[idx].right = list[idx + 1];
-                        //Change reference, so other operators would detect this whole subtree and use it.
-                        FillSubtreeWithNodes(list, list[idx], list[idx + 1]);
-                    }
-                    else
-                    {
-                        return "errDiv";
-                    }
-
-                    try
-                    {
-                        ExpressionNode oldValue = list[idx];
-                        list[idx].value = Convert.ToString(MathLibrary.Math.Divide(Convert.ToDouble(list[idx].left.value), Convert.ToDouble(list[idx].right.value)));
-                        FillSubtreeWithNodes(list, list[idx], oldValue);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        return "errDiv";
-                    }
-
+                    return "errDivide";
                 }
+            }
+
             startAt = 0;
-                //Sub function ----------------------------------------
-                while ((idx = GetItemIndex("-", list, startAt)) != -1)
+            //Multiply function ----------------------------------------
+            while ((idx = GetItemIndex("×", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if (SolveOperator(ref list, idx, f: MathLibrary.Math.Multiply) == Double.NaN)
                 {
-                    //To find the next item
-                    startAt = idx + 1;
-                    //Create subtree
-                    if (idx > 0 && idx < list.Count() - 1)
-                    {
-                        //Set parent to previous node/subtree
-                        list[idx - 1].parent = list[idx];
-                        //Set number/subtree as a child of operator node
-                        list[idx].left = list[idx - 1];
-                        //Change reference, so other operators would detect this whole subtree and use it.
-                        FillSubtreeWithNodes(list, list[idx], list[idx - 1]);
-
-                        //Set parent to previous node/subtree
-                        list[idx + 1].parent = list[idx];
-                        //Set number/subtree as a child of operator node
-                        list[idx].right = list[idx + 1];
-                        //Change reference, so other operators would detect this whole subtree and use it.
-                        FillSubtreeWithNodes(list, list[idx], list[idx + 1]);
-                    }
-                    else
-                    {
-                        return "errSub";
-                    }
-
-                    try
-                    {
-                        ExpressionNode oldValue = list[idx];
-                        list[idx].value = Convert.ToString(MathLibrary.Math.Sub(Convert.ToDouble(list[idx].left.value), Convert.ToDouble(list[idx].right.value)));
-                        FillSubtreeWithNodes(list, list[idx], oldValue);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        return "errSub";
-                    }
-
+                    return "errMultiply";
                 }
+            }
 
-                Console.WriteLine("Writing the whole list:");
-                for (int i = 0; i < list.Count(); i++)
+            startAt = 0;
+            //Sub function ----------------------------------------
+            while ((idx = GetItemIndex("-", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if (SolveOperator(ref list, idx, f: MathLibrary.Math.Sub) == Double.NaN)
                 {
-                    Console.Write(list[i].value);
-                    Console.Write(", ");
+                    return "errSub";
                 }
-                Console.WriteLine(" ");
+            }
 
-                
+            startAt = 0;
+            //Add function ----------------------------------------
+            while ((idx = GetItemIndex("+", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if (SolveOperator(ref list, idx, f: MathLibrary.Math.Add) == Double.NaN)
+                {
+                    return "errAdd";
+                }
+            }
+
+            Console.WriteLine("Debug list:");
+            for(int i = 0; i < list.Count(); i++)
+            {
+                Console.Write(list[i].value);
+                Console.Write(",");
+            }
+            Console.WriteLine("END");
+
             return list[0].value;
         }
 
@@ -827,9 +671,14 @@ namespace Calculator
         /// <param name="list">List to change</param>
         /// <param name="to">Node to replace subtree with</param>
         /// <param name="subtree">Subtree to replace</param>
-       private void FillSubtreeWithNodes(List<ExpressionNode> list, ExpressionNode to, ExpressionNode subtree)
+       private void FillSubtreeWithNodes(ref List<ExpressionNode> list, ExpressionNode to, ExpressionNode subtree)
         {
-            for(int i = 0; i < list.Count(); i++)
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
+            for (int i = 0; i < list.Count(); i++)
             {
                 if(list[i].id == subtree.id)
                 {
@@ -838,55 +687,157 @@ namespace Calculator
             }
         }
 
-        private double SolveOperator(string op, double number1, double number2)
+        /// <summary>
+        /// Solves a single part of input expression
+        /// </summary>
+        /// <param name="list">Reference to a list of items</param>
+        /// <param name="idx">Index in the list, where the operator can be found</param>
+        /// <param name="f">Function to call on operands</param>
+        /// <returns>Result of an operation on success, NaN on error</returns>
+        private double SolveOperator(ref List<ExpressionNode> list ,int idx, Func<double, double, double> f)
         {
-            switch (op)
+            if (list == null)
             {
-                case "^":
-                    try
-                    {
-                        double result = MathLibrary.Math.Pow(number1, (int)number2);
-                        return result;
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        return Double.NaN;
-                    }
-                case "√":
-                    try
-                    {
-                        double result = MathLibrary.Math.Root(number1, (int)number2);
-                        return result;
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        return Double.NaN;
-                    }
-                
+                throw new ArgumentNullException(nameof(list));
             }
-            return 0.0;
-        }
-        private double SolveOperator(string op, double number)
-        {
-            switch (op)
+            //Create subtree
+            if (idx > 0 && idx < (list.Count() - 1))
             {
-                case "!":
-                    try
-                    {
-                        double result = MathLibrary.Math.Factorial((int)number);
-                        return result;
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        return Double.NaN;
-                    }
-                    
+                //Set parent to previous node/subtree
+                list[idx - 1].parent = list[idx];
+                //Set number/subtree as a child of operator node
+                list[idx].left = list[idx - 1];
+
+                //Set parent to next node/subtree
+                list[idx + 1].parent = list[idx];
+                //Set number/subtree as a child of operator node
+                list[idx].right = list[idx + 1];
 
             }
-            return 0.0;
+            else
+            {
+                return Double.NaN;
+            }
+
+            try
+            {
+                //Calculate the result with given function
+                double result = f(Convert.ToDouble(list[idx].left.value), Convert.ToDouble(list[idx].right.value));
+                //Set node value to th result
+                list[idx].value = Convert.ToString(result);
+                //Change reference, so other operators would detect this whole subtree and use it.
+                FillSubtreeWithNodes(ref list, list[idx], list[idx - 1]);
+                FillSubtreeWithNodes(ref list, list[idx], list[idx + 1]);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return Double.NaN;
+            }
+        }
+
+        /// <summary>
+        /// Solves a single part of input expression
+        /// </summary>
+        /// <param name="list">Reference to a list of items</param>
+        /// <param name="idx">Index in the list, where the operator can be found</param>
+        /// <param name="f">Function to call on operands</param>
+        /// <param name="reverseOrder">If true, the number in front of operand will be interpreted as int and sent to function as second parameter</param>
+        /// <returns>Result of an operation on success, NaN on error</returns>
+        private double SolveOperator(ref List<ExpressionNode> list, int idx, Func<double, int, double> f, bool reverseOrder = false)
+        {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
+            //Create subtree
+            if (idx > 0 && idx < (list.Count() - 1))
+            {
+                //Set parent to previous node/subtree
+                list[idx - 1].parent = list[idx];
+                //Set number/subtree as a child of operator node
+                list[idx].left = list[idx - 1];
+
+                //Set parent to next node/subtree
+                list[idx + 1].parent = list[idx];
+                //Set number/subtree as a child of operator node
+                list[idx].right = list[idx + 1];
+            }
+            else
+            {
+                return Double.NaN;
+            }
+            try
+            {
+                double result;
+                //Calculate the result with given function
+                if (reverseOrder)
+                {
+                    result = f(Convert.ToDouble(list[idx].right.value), Convert.ToInt32(list[idx].left.value));
+                }
+                else
+                {
+                    result = f(Convert.ToDouble(list[idx].left.value), Convert.ToInt32(list[idx].right.value));
+                }
+                
+                //Set node value to th result
+                list[idx].value = Convert.ToString(result);
+                //Change reference, so other operators would detect this whole subtree and use it.
+                FillSubtreeWithNodes(ref list, list[idx], list[idx - 1]);
+                FillSubtreeWithNodes(ref list, list[idx], list[idx + 1]);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return Double.NaN;
+            }
+        }
+
+        /// <summary>
+        /// Solves a single part of input expression
+        /// </summary>
+        /// <param name="list">Reference to a list of items</param>
+        /// <param name="idx">Index in the list, where the operator can be found</param>
+        /// <param name="f">Function to call on operands</param>
+        /// <returns>Result of an operation on success, NaN on error</returns>
+        private double SolveOperator(ref List<ExpressionNode> list, int idx, Func<int, double> f)
+        {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+            //Create subtree
+            if (idx > 0)
+            {
+                //Set parent to previous node/subtree
+                list[idx - 1].parent = list[idx];
+                //Set number/subtree as a child of operator node
+                list[idx].left = list[idx - 1];
+                
+            }
+            else
+            {
+                return Double.NaN;
+            }
+
+            try
+            {
+                //Calculate the result with given function
+                double result = f(Convert.ToInt32(list[idx].left.value));
+                //Set node value to th result
+                list[idx].value = Convert.ToString(result);
+                //Change reference, so other operators would detect this whole subtree and use it.
+                FillSubtreeWithNodes(ref list, list[idx], list[idx - 1]);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return Double.NaN;
+            }
         }
 
         /// <summary>
