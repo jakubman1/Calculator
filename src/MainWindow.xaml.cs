@@ -654,32 +654,7 @@ namespace Calculator
             } 
 
             return list[0].value;
-            /*//We will do recursive solving, tempList will hold partialy solved equation, until there is only one string
-            List<string> tempList = new List<string>();
-            int idx;
-            //Mame pouze jeden prvek, vratime jej
-            if(list.Count() == 1)
-            {
-                return list[0];
-            }
-            else
-            {
-                //Prvni resime mocniny
-                while((idx = GetItemIndex("^", list)) != -1)
-                {
-                    try
-                    {
-                        tempList.Add(Convert.ToString(MathLibrary.Math.Pow(Convert.ToDouble(list[idx - 1]), Convert.ToInt32(list[idx + 1]))));
-                    }
-                    catch(Exception e)
-                    {
-                        Console.WriteLine(e);
-                        return "";
-                    }
 
-                }
-                return "";
-            }*/
         }
 
         /// <summary>
