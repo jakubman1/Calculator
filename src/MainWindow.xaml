@@ -42,6 +42,5 @@
         <Label Content="+" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="702,237,0,0" Height="32" Width="32" Background="#FF3B3B98" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" MouseEnter="ButtonEnter" MouseLeave="PurpleButtonLeave" MouseUp="SimpleButtonClicked"/>
         <Label x:Name="buttonEquals" Content="=" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="702,277,0,0" Height="32" Width="32" Background="#FF3B3B98" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" MouseEnter="ButtonEnter" MouseLeave="PurpleButtonLeave" MouseUp="SimpleButtonClicked"/>
 
-        Title="MainWindow" Height="350" Width="525">
     </Grid>
 </Window>
