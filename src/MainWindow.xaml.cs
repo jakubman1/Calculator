@@ -590,7 +590,7 @@ namespace Calculator
                     //Set number/subtree as a child of operator node
                     list[idx].left = list[idx - 1];
                     //Change reference, so other operators would detect this whole subtree and use it.
-                    FillSubreeWithNodes(list, list[idx], list[idx - 1]);
+                    FillSubtreeWithNodes(list, list[idx], list[idx - 1]);
                     try
                     {
                         //Calculate the value of the currently created subtree, so we don't have to do it later.
@@ -622,7 +622,7 @@ namespace Calculator
                     //Set number/subtree as a child of operator node
                     list[idx].left = list[idx - 1];
                     //Change reference, so other operators would detect this whole subtree and use it.
-                    FillSubreeWithNodes(list, list[idx], list[idx - 1]);
+                    FillSubtreeWithNodes(list, list[idx], list[idx - 1]);
                 }
                 else
                 {
@@ -688,7 +688,7 @@ namespace Calculator
         /// <param name="list">List to change</param>
         /// <param name="to">Node to replace subtree with</param>
         /// <param name="subtree">Subtree to replace</param>
-       private void FillSubreeWithNodes(List<ExpressionNode> list, ExpressionNode to, ExpressionNode subtree)
+       private void FillSubtreeWithNodes(List<ExpressionNode> list, ExpressionNode to, ExpressionNode subtree)
         {
             for(int i = 0; i < list.Count(); i++)
             {
