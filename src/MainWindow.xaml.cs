@@ -114,9 +114,10 @@ namespace Calculator
                     //Operator has one character - always correct
                     if((endIndex + 1 - startIndex) == 1)
                     {
+                        //= sign must be at second position
                         if (w.Text == "=")
                         {
-                            if(startIndex == 1 || startIndex == text.Length - 2)
+                            if(startIndex == 1)
                             {
                                 w.Type = 1;
                             }
@@ -318,7 +319,7 @@ namespace Calculator
                 if (IsLetter(list[i].value))
                 {
                     double value = GetFromMemory(list[i].value[0]);
-                    if(!Double.IsNaN(value) && (i < list.Count() - 1) && list[i + 1].value != "=")
+                    if(!Double.IsNaN(value) && !((i < list.Count() - 1) && list[i + 1].value == "="))
                     {
                         list[i].value = Convert.ToString(value);
                     } 
@@ -722,9 +723,9 @@ namespace Calculator
                 //Second character is =, first should be a character
                 if (list[1].value == "=")
                 {
-                    if(IsLetter(list[0].value))
+                    if (IsLetter(list[0].value) && Double.TryParse(list[2].value, out double num))
                     {
-                        AddToMemory(list[0].value[0], Convert.ToDouble(list[2].value));
+                        AddToMemory(list[0].value[0], num);
                         Console.WriteLine("Added to memory");
                         FillSubtreeWithNodes(ref list, list[2], list[1]);
                         FillSubtreeWithNodes(ref list, list[2], list[0]);
