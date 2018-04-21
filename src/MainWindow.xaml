@@ -41,6 +41,7 @@
         <Label Content="-" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="702,197,0,0" Height="32" Width="32" Background="#FF3B3B98" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" MouseEnter="ButtonEnter" MouseLeave="PurpleButtonLeave" MouseUp="SimpleButtonClicked"/>
         <Label Content="+" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="702,237,0,0" Height="32" Width="32" Background="#FF3B3B98" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" MouseEnter="ButtonEnter" MouseLeave="PurpleButtonLeave" MouseUp="SimpleButtonClicked"/>
         <Label x:Name="buttonEquals" Content="=" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="702,277,0,0" Height="32" Width="32" Background="#FF3B3B98" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" MouseEnter="ButtonEnter" MouseLeave="PurpleButtonLeave" MouseUp="SimpleButtonClicked"/>
+        <TextBlock x:Name="textBlockMemory" HorizontalAlignment="Left" Margin="521,10,0,0" TextWrapping="Wrap" Text="a=0" VerticalAlignment="Top" Height="99" Width="213" Background="White" Padding="5,0,4,0" ScrollViewer.CanContentScroll="True" UseLayoutRounding="False"/>
 
     </Grid>
 </Window>

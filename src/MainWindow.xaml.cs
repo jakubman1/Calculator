@@ -414,6 +414,11 @@ namespace Calculator
                     {
                         TextBlockResult.Text = result;
                     }
+                    textBlockMemory.Text = "";
+                    for(int i = 0; i < memory.Count(); i++)
+                    {
+                        textBlockMemory.Text += memory[i].Letter + "=" + Convert.ToString(memory[i].Number) + "\n";
+                    }
                     
                 }
             }
