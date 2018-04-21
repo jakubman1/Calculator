@@ -13,18 +13,16 @@
 ## Prostředí
 - Windows 10 - 64bit
 
-# TODO - pamět?
 ## Popis
 - Tento projekt vznikl pro předmět IVS – Praktické aspekty vývoje software.
 - Kalkulačka umí základní matematické operace (+,-,*,/), faktoriál, umocňování s přirozenými exponenty, obecnou odmocninu a absolutní hodnotu.
 - Vstup lze zadávat pomocí tlačítek či klávesnice a zadaný výraz je vhodně obarvován.
-- ? Je podporována pamět. ? 
+- Je podporována pamět.
 
 # TODO – odkaz
 ## Postup instalace
 - Pro přesný postup instalace viz manuál k instalaci. (Odkaz na manuál až bude hotovej)
 
-# TODO – něco navíc?
 ## Jak přispívat
 - V případě nalezení chyby či požadavku na další funkcionality kontaktujte, prosím, vedoucího týmu: xtykva00@stud.fit.vutbr.cz.
 
