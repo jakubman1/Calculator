@@ -313,17 +313,13 @@ namespace Calculator
 
         private void SolveMemory(List<ExpressionNode> list)
         {
-            Console.WriteLine("Solving memory");
             for(int i = 0; i < list.Count(); i++)
             {
                 if (IsLetter(list[i].value))
                 {
-                    Console.WriteLine("Found letter");
                     double value = GetFromMemory(list[i].value[0]);
-                    if(!Double.IsNaN(value))
+                    if(!Double.IsNaN(value) && (i < list.Count() - 1) && list[i + 1].value != "=")
                     {
-                        Console.WriteLine("Found in memory");
-                        Console.WriteLine(value);
                         list[i].value = Convert.ToString(value);
                     } 
                 }
@@ -404,7 +400,6 @@ namespace Calculator
                 if (GetItemIndex(-1, words) != -1)
                 {
                     //There was an error in the input, equation can not be solved
-                    //TextBlockResult.Text = "Chyba";
                 }
                 else
                 {
