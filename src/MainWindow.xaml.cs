@@ -571,6 +571,7 @@ namespace Calculator
         {
             ButtonEnter(sender, e);
             inputTextBox.AppendText((string)((Label)sender).Content);
+            
         }
 
 
