@@ -114,7 +114,22 @@ namespace Calculator
                     //Operator has one character - always correct
                     if((endIndex + 1 - startIndex) == 1)
                     {
-                        w.Type = 1;
+                        if (w.Text == "=")
+                        {
+                            if(startIndex == 1 || startIndex == text.Length - 2)
+                            {
+                                w.Type = 1;
+                            }
+                            else
+                            {
+                                w.Type = -1;
+                            }
+                        }
+                        else
+                        {
+                            w.Type = 1;
+                        }
+                        
                     }
                     //Operator has two characters - We are replacing the text, if we find ** or ××
                     else if ((endIndex + 1 - startIndex) == 2)
@@ -672,6 +687,14 @@ namespace Calculator
                 {
                     return "errAdd";
                 }
+            }
+
+            startAt = 0;
+            //Add variable to memory (operator =) ----------------
+            while ((idx = GetItemIndex("=", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                
             }
 
             Console.WriteLine("Debug list:");
