@@ -33,14 +33,8 @@ namespace Calculator
             public string Text;
             public int Type; //0=numbers,1=standard operators,2=special operators,3=exponents,4=letters(memory),5=absolute value, -1=error state
         }
-
-        struct MemItem
-        {
-            public char Letter;
-            public double Value;
-        }
         private List<Word> words = new List<Word>();
-        private List<MemItem> memory = new List<MemItem>();
+        public List<MemItem> memory = new List<MemItem>();
 
         //Setup brushes
         Brush numberBrush = new SolidColorBrush(Color.FromArgb(255, 34, 207, 247));
@@ -259,6 +253,32 @@ namespace Calculator
             return false;
         }
 
+        private int AddToMemory(char name, double value)
+        {
+            int index;
+            if((index = GetMemoryIndex(name)) != -1)
+            {
+                memory[index] = new MemItem(name, value);
+            }
+            else
+            {
+                memory.Add(new MemItem(name, value));
+            }
+            return 0;
+        }
+
+        private int GetMemoryIndex(char c)
+        {
+            for (int i = 0; i < memory.Count; i++)
+            {
+                if (c == memory[i].Letter)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         /// <summary>
         /// Gets value from memory by a letter.
         /// </summary>
@@ -270,7 +290,7 @@ namespace Calculator
             {
                 if (c == memory[i].Letter)
                 {
-                    return memory[i].Value;
+                    return memory[i].Number;
                 }
             }
             return Double.NaN;
@@ -908,7 +928,6 @@ namespace Calculator
             return -1;
         }
 
+
     }
-
-
 }
