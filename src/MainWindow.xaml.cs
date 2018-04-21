@@ -310,6 +310,29 @@ namespace Calculator
             }
             return Double.NaN;
         }
+
+        private void SolveMemory(List<ExpressionNode> list)
+        {
+            Console.WriteLine("Solving memory");
+            for(int i = 0; i < list.Count(); i++)
+            {
+                if (IsLetter(list[i].value))
+                {
+                    Console.WriteLine("Found letter");
+                    double value = GetFromMemory(list[i].value[0]);
+                    if(!Double.IsNaN(value))
+                    {
+                        Console.WriteLine("Found in memory");
+                        Console.WriteLine(value);
+                        list[i].value = Convert.ToString(value);
+                    } 
+                }
+            }
+        }
+        private bool IsLetter(string s)
+        {
+            return s.Length == 1 && ((s[0] <= 'z' && s[0] >= 'a') || (s[0] <= 'Z' && s[0] >= 'A'));
+        }
         /// <summary>
         /// Replaces user written input into correct characters
         /// </summary>
@@ -609,6 +632,9 @@ namespace Calculator
             int idx;
             int startAt = 0;
 
+            //Change letters from memory into numbers
+            SolveMemory(list);
+
             //We are solving the equation from the most significant operators 
             //we don't have to solve numbers, as they won't create trees and are already nodes.
 
@@ -616,7 +642,7 @@ namespace Calculator
             while ((idx = GetItemIndex("!", list, startAt)) != -1)
             {
                 startAt = idx + 1;
-                if(SolveOperator(ref list, idx, f: MathLibrary.Math.Factorial) == Double.NaN)
+                if(Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Factorial)))
                 {
                     return "errFact";
                 }
@@ -627,7 +653,7 @@ namespace Calculator
             while ((idx = GetItemIndex("^", list, startAt)) != -1)
             {
                 startAt = idx + 1;
-                if(SolveOperator(ref list, idx, f: MathLibrary.Math.Pow) == Double.NaN)
+                if(Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Pow)))
                 {
                     return "errPow";
                 }
@@ -638,7 +664,7 @@ namespace Calculator
             while ((idx = GetItemIndex("√", list, startAt)) != -1)
             {
                 startAt = idx + 1;
-                if (SolveOperator(ref list, idx, f: MathLibrary.Math.Root, reverseOrder: true) == Double.NaN)
+                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Root, reverseOrder: true)))
                 {
                     return "errRoot";
                 }
@@ -650,7 +676,7 @@ namespace Calculator
             while ((idx = GetItemIndex("÷", list, startAt)) != -1)
             {
                 startAt = idx + 1;
-                if (SolveOperator(ref list, idx, f: MathLibrary.Math.Divide) == Double.NaN)
+                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Divide)))
                 {
                     return "errDivide";
                 }
@@ -661,7 +687,7 @@ namespace Calculator
             while ((idx = GetItemIndex("×", list, startAt)) != -1)
             {
                 startAt = idx + 1;
-                if (SolveOperator(ref list, idx, f: MathLibrary.Math.Multiply) == Double.NaN)
+                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Multiply)))
                 {
                     return "errMultiply";
                 }
@@ -672,7 +698,7 @@ namespace Calculator
             while ((idx = GetItemIndex("-", list, startAt)) != -1)
             {
                 startAt = idx + 1;
-                if (SolveOperator(ref list, idx, f: MathLibrary.Math.Sub) == Double.NaN)
+                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Sub)))
                 {
                     return "errSub";
                 }
@@ -683,19 +709,30 @@ namespace Calculator
             while ((idx = GetItemIndex("+", list, startAt)) != -1)
             {
                 startAt = idx + 1;
-                if (SolveOperator(ref list, idx, f: MathLibrary.Math.Add) == Double.NaN)
+                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Add)))
                 {
                     return "errAdd";
                 }
             }
 
-            startAt = 0;
             //Add variable to memory (operator =) ----------------
-            while ((idx = GetItemIndex("=", list, startAt)) != -1)
+            //At least 3 items must exist
+            if(list.Count() >= 3)
             {
-                startAt = idx + 1;
-                
+                //Second character is =, first should be a character
+                if (list[1].value == "=")
+                {
+                    if(IsLetter(list[0].value))
+                    {
+                        AddToMemory(list[0].value[0], Convert.ToDouble(list[2].value));
+                        Console.WriteLine("Added to memory");
+                        FillSubtreeWithNodes(ref list, list[2], list[1]);
+                        FillSubtreeWithNodes(ref list, list[2], list[0]);
+
+                    }
+                }
             }
+            
 
             Console.WriteLine("Debug list:");
             for(int i = 0; i < list.Count(); i++)
