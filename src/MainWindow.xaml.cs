@@ -561,14 +561,6 @@ namespace Calculator
             ((Label)sender).Background = (Brush)bc.ConvertFrom("#CB1C51");
         }
 
-        // testovaci funkce, je zapotrebi zavolat ButtenPressedEffect a v eventech tlacitka zavolat ButtonEnter pri MouseLeftButtonUp
-        private void Button42Clicked(object sender, MouseButtonEventArgs e)
-        {
-            ButtonPressedEffect(sender, e);
-            //inputTextBox.AppendText("42");
-        }
-
-
         /// <summary>
         /// Click handler for buttons, that add their content to the input field.
         /// </summary>
@@ -578,19 +570,21 @@ namespace Calculator
         {
             ButtonEnter(sender, e);
             inputTextBox.AppendText((string)((Label)sender).Content);
-            
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
         }
 
 
         private void buttonClear_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            ButtonEnter(sender, e);
             TextBlockResult.Text = "0";
             inputTextBox.Document.Blocks.Clear();
         }
 
         private void buttonDelete_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if(words.Count() > 0)
+            ButtonEnter(sender, e);
+            if (words.Count() > 0)
             {
                 inputTextBox.TextChanged -= InputTextBox_TextChanged;
                 buttonDelete.MouseUp -= buttonDelete_MouseUp;
@@ -1042,7 +1036,5 @@ namespace Calculator
             }
             return -1;
         }
-
-
     }
 }
