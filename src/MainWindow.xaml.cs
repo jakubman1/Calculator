@@ -644,8 +644,8 @@ namespace Calculator
             while((idx = GetItemIndex("|", list)) != -1)
             {
                 int idx2 = -1;
-                if((idx2 = GetItemIndex("|", list, idx + 1)) != -1) {
-                    //We found another absolute value sign, compute the value inside of it. 
+                if((idx2 = GetItemIndex("|", list, idx + 1)) != -1 && (idx != idx2 + 1)) {
+                    //We found another absolute value sign, solve the expression inside of it. 
                     List<ExpressionNode> insideList = new List<ExpressionNode>();
                     for(int i = idx + 1; i < idx2; i++)
                     {
@@ -653,12 +653,19 @@ namespace Calculator
                         /*Console.Write("Adding:");
                         Console.WriteLine(list[i].value);*/
                     }
-                    string result = Solve(insideList);
-                    Console.WriteLine(result);
-                    list[idx].value = Convert.ToString(MathLibrary.Math.Abs(Convert.ToDouble(result)));
-                    for(int i = idx + 1; i <= idx2; i++)
+                    if(insideList.Count() != 0)
                     {
-                        list[i] = list[idx];
+                        string result = Solve(insideList);
+                        Console.WriteLine(result);
+                        list[idx].value = Convert.ToString(MathLibrary.Math.Abs(Convert.ToDouble(result)));
+                        for (int i = idx + 1; i <= idx2; i++)
+                        {
+                            list[i] = list[idx];
+                        }
+                    }
+                    else
+                    {
+                        return "errAbs";
                     }
 
                 }
@@ -767,13 +774,13 @@ namespace Calculator
             }
             
 
-            /*Console.WriteLine("Debug list:");
+            Console.WriteLine("Debug list:");
             for(int i = 0; i < list.Count(); i++)
             {
                 Console.Write(list[i].value);
                 Console.Write(",");
             }
-            Console.WriteLine("END");*/
+            Console.WriteLine("END");
 
             return list[0].value;
         }
