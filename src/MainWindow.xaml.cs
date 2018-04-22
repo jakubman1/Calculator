@@ -9,10 +9,12 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Threading;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MathLibrary;
+using System.Globalization;
 
 namespace Calculator
 {
@@ -49,17 +51,20 @@ namespace Calculator
         {
             int startIndex = 0;
             int endIndex = 0;
+            //text.Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+            //text.Replace(".", Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+            //Console.WriteLine(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
             //Console.WriteLine(text);
             //Lets go through the whole text, letter by letter
-            for(int i = 0; i < text.Length; i++)
+            for (int i = 0; i < text.Length; i++)
             {
                 
                 //We found a number
-                if ((text[i] >= '0' && text[i] <= '9') || (text[i] == '.' || text[i] == ','))
+                if ((text[i] >= '0' && text[i] <= '9') || (text[i] == CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator[0]))
                 {
                     //Check for the whole number
-                    while (i < text.Length && ((text[i] >= '0' && text[i] <= '9') || (text[i] == '.' || text[i] == ',')))
+                    while (i < text.Length && ((text[i] >= '0' && text[i] <= '9') || (text[i] == CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator[0])))
                     {
                         i++;
                     }
@@ -74,8 +79,10 @@ namespace Calculator
                         Text = text.Substring(startIndex, endIndex + 1 - startIndex)
                     };
 
+                    //w.Text.Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
                     //Number can not end with a dot, also you can not divide by zero
-                    if((text[endIndex] == '.' || text[endIndex] == ',') || (startIndex > 0 && text[startIndex - 1] == '÷' && Convert.ToDouble(w.Text) == 0) )
+                    if ((text[endIndex] == '.' || text[endIndex] == ',') || (startIndex > 0 && text[startIndex - 1] == '÷' && Convert.ToDouble(w.Text) == 0) )
                     {
                         w.Type = -1;
                     }
