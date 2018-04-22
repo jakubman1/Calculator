@@ -640,7 +640,38 @@ namespace Calculator
             //We are solving the equation from the most significant operators 
             //we don't have to solve numbers, as they won't create trees and are already nodes.
 
+            //Absolute value ---------------------------------------
+            while((idx = GetItemIndex("|", list)) != -1)
+            {
+                int idx2 = -1;
+                if((idx2 = GetItemIndex("|", list, idx + 1)) != -1) {
+                    //We found another absolute value sign, compute the value inside of it. 
+                    List<ExpressionNode> insideList = new List<ExpressionNode>();
+                    for(int i = idx + 1; i < idx2; i++)
+                    {
+                        insideList.Add(list[i]);
+                        /*Console.Write("Adding:");
+                        Console.WriteLine(list[i].value);*/
+                    }
+                    string result = Solve(insideList);
+                    Console.WriteLine(result);
+                    list[idx].value = Convert.ToString(MathLibrary.Math.Abs(Convert.ToDouble(result)));
+                    for(int i = idx + 1; i <= idx2; i++)
+                    {
+                        list[i] = list[idx];
+                    }
+
+                }
+                else
+                {
+                    //We did not find another absolute value sing, expression is invalid
+                    //Todo - check this in syntax highlightning
+                    return "errAbs";
+                }
+            }
+
             //Factorial --------------------------------------------
+            startAt = 0;
             while ((idx = GetItemIndex("!", list, startAt)) != -1)
             {
                 startAt = idx + 1;
@@ -727,7 +758,7 @@ namespace Calculator
                     if (IsLetter(list[0].value) && Double.TryParse(list[2].value, out double num))
                     {
                         AddToMemory(list[0].value[0], num);
-                        Console.WriteLine("Added to memory");
+                        //Console.WriteLine("Added to memory");
                         FillSubtreeWithNodes(ref list, list[2], list[1]);
                         FillSubtreeWithNodes(ref list, list[2], list[0]);
 
@@ -736,13 +767,13 @@ namespace Calculator
             }
             
 
-            Console.WriteLine("Debug list:");
+            /*Console.WriteLine("Debug list:");
             for(int i = 0; i < list.Count(); i++)
             {
                 Console.Write(list[i].value);
                 Console.Write(",");
             }
-            Console.WriteLine("END");
+            Console.WriteLine("END");*/
 
             return list[0].value;
         }
@@ -950,7 +981,7 @@ namespace Calculator
         /// <returns>Index in words or -1 if item was not found</returns>
         private int GetItemIndex(string item, List<ExpressionNode> list, int startAt = 0)
         {
-            for (int i = startAt; i < words.Count(); i++)
+            for (int i = startAt; i < list.Count(); i++)
             {
                 if (list[i].value == item)
                 {
@@ -962,7 +993,7 @@ namespace Calculator
 
         private int GetItemIndex(string item, List<Word> list)
         {
-            for (int i = 0; i < words.Count(); i++)
+            for (int i = 0; i < list.Count(); i++)
             {
                 if (list[i].Text == item)
                 {
