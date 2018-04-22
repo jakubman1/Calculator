@@ -409,7 +409,7 @@ namespace Calculator
 
                     if (result == "" || (result.Length >= 3 && result.Substring(0,3) == "err"))
                     {
-                        
+                        TextBlockResult.Text = "Neplatny vyraz";
                     }
                     else
                     {
@@ -656,18 +656,26 @@ namespace Calculator
                     if(insideList.Count() != 0)
                     {
                         string result = Solve(insideList);
-                        Console.WriteLine(result);
-                        list[idx].value = Convert.ToString(MathLibrary.Math.Abs(Convert.ToDouble(result)));
-                        for (int i = idx + 1; i <= idx2; i++)
+                        if(result.Length >= 3 && result.Substring(0,3) == "err")
                         {
-                            list[i] = list[idx];
+                            //Exression inside absolute value was invalid.
+                            return "errAbs";
+                        }
+                        else
+                        {
+                            
+                            list[idx].value = Convert.ToString(MathLibrary.Math.Abs(Convert.ToDouble(result)));
+                            for (int i = idx + 1; i <= idx2; i++)
+                            {
+                                list[i] = list[idx];
+                            }
                         }
                     }
                     else
                     {
+                        //There was nothing in the absolute value.
                         return "errAbs";
                     }
-
                 }
                 else
                 {
