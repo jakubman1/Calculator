@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathLibTest", "lib\MathLibT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathLibrary", "lib\MathLibrary\MathLibrary.csproj", "{35010B0A-4413-462D-AD6B-9B9591D32726}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{01CA9BD9-AD3F-4BD0-89E0-A2673EA44300}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,8 @@ Global
 		{35010B0A-4413-462D-AD6B-9B9591D32726}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35010B0A-4413-462D-AD6B-9B9591D32726}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35010B0A-4413-462D-AD6B-9B9591D32726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01CA9BD9-AD3F-4BD0-89E0-A2673EA44300}.Debug|Any CPU.ActiveCfg = Debug
+		{01CA9BD9-AD3F-4BD0-89E0-A2673EA44300}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
