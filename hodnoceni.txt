@@ -1,4 +1,4 @@
 xtykva00 100 (plán projektu, matematická knihovna, úprava testù matematické knihovny, README, Doxyfile, prvky GUI)
-xmanja00 120 (skuteènì øešená èást projektu)
-xholas09 90 (skuteènì øešená èást projektu)
-xslesi02 90 (Uživatelská pøíruèka, Profilling, Manuál instalace)
+xmanja00 120 (testy pro matematickou knihovnu, zvýrazòování vstupního pole, vyhodnocení výrazu, prvky GUI, pamìt)
+xholas09 90 (Makefile, instalátor, kontrola testù matematické knihovny)
+xslesi02 90 (uživatelská pøíruèka, profilling, manuál instalace)
