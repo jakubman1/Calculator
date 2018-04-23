@@ -576,6 +576,7 @@ namespace Calculator
             try
             {
                 inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+                //inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextContextPosition(LogicalDirection.Forward);
             }
             catch (Exception ecx)
             {
@@ -1125,15 +1126,31 @@ namespace Calculator
         private void PowerButtonClicked(object sender, MouseButtonEventArgs e)
         {
             ButtonEnter(sender, e);
-            inputTextBox.AppendText("^");
-            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
+            inputTextBox.CaretPosition.InsertTextInRun("^");
+            inputTextBox.Focus();
+            try
+            {
+                inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+            }
+            catch (Exception ecx)
+            {
+                Console.WriteLine(ecx.Message);
+            }
         }
 
         private void RootButtonClicked(object sender, MouseButtonEventArgs e)
         {
             ButtonEnter(sender, e);
-            inputTextBox.AppendText("√");
-            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
+            inputTextBox.CaretPosition.InsertTextInRun("√");
+            inputTextBox.Focus();
+            try
+            {
+                inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+            }
+            catch (Exception ecx)
+            {
+                Console.WriteLine(ecx.Message);
+            }
         }
 
         private void AbsButtonClicked(object sender, MouseButtonEventArgs e)
