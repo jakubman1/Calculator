@@ -741,12 +741,19 @@ namespace Calculator
                         }
                         else
                         {
-                            
-                            list[idx].value = Convert.ToString(MathLibrary.Math.Abs(Convert.ToDouble(result)));
-                            for (int i = idx + 1; i <= idx2; i++)
+                            if(Double.TryParse(result, out double dres))
                             {
-                                list[i] = list[idx];
+                                list[idx].value = Convert.ToString(MathLibrary.Math.Abs(dres));
+                                for (int i = idx + 1; i <= idx2; i++)
+                                {
+                                    list[i] = list[idx];
+                                }
                             }
+                            else
+                            {
+                                return "errAbs";
+                            }
+                            
                         }
                     }
                     else
