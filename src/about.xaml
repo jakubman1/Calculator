@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
         mc:Ignorable="d"
-        Title="about" Height="450" Width="800">
+        Title="O programu" Height="400" Width="300" ResizeMode="NoResize">
     <Grid>
-        <Label Content="O programu xxx" HorizontalAlignment="Left" Margin="269,116,0,0" VerticalAlignment="Top"/>
-
+        <Label Content="Kalkulačka 42" Margin="22,23,21,290" Height="58" FontSize="36" VerticalContentAlignment="Center" FontWeight="Bold" HorizontalAlignment="Left"/>
+        <Label Content="Verze: 1.0" HorizontalAlignment="Center" Margin="22,81,178,253" VerticalAlignment="Center" FontSize="20"/>
+        <TextBlock HorizontalAlignment="Center" Margin="22,123,57,225" TextWrapping="Wrap" VerticalAlignment="Center" Height="23" Width="215" FontSize="20" RenderTransformOrigin="1.219,0.414">
+           Licence <Hyperlink NavigateUri="https://github.com/jakubman1/Calculator/blob/master/LICENSE.md" RequestNavigate="Hyperlink_RequestNavigate">
+                GNU GPL v. 3
+            </Hyperlink>
+        </TextBlock>
     </Grid>
 </Window>
