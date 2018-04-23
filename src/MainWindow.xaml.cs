@@ -214,7 +214,7 @@ namespace Calculator
                     
                     words.Add(w);
                 }
-                else if (text[i] == '|')
+                else if (text[i] == '|' || text[i] == '(' || text[i] == ')')
                 {
                     endIndex = i + 1;
                     Word w = new Word
@@ -641,10 +641,56 @@ namespace Calculator
             SolveMemory(list);
 
             //We are solving the equation from the most significant operators 
-            //we don't have to solve numbers, as they won't create trees and are already nodes.
+            //we don't have to solve numbers themeselves, as they won't create trees and are already nodes.
+
+            //Brackets ---------------------------------------
+            while ((idx = GetItemIndex("(", list)) != -1)
+            {
+                int idx2 = -1;
+                if ((idx2 = GetItemIndexFromBack(")", list)) != -1 && (idx != idx2 + 1))
+                {
+                    //We found another absolute value sign, solve the expression inside of it. 
+                    List<ExpressionNode> insideList = new List<ExpressionNode>();
+                    for (int i = idx + 1; i < idx2; i++)
+                    {
+                        insideList.Add(list[i]);
+                        /*Console.Write("Adding:");
+                        Console.WriteLine(list[i].value);*/
+                    }
+                    if (insideList.Count() != 0)
+                    {
+                        string result = Solve(insideList);
+                        if (result.Length >= 3 && result.Substring(0, 3) == "err")
+                        {
+                            //Exression inside brackets was invalid.
+                            return "errBrackets";
+                        }
+                        else
+                        {
+
+                            list[idx].value = result;
+                            for (int i = idx + 1; i <= idx2; i++)
+                            {
+                                list[i] = list[idx];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //There was nothing in the absolute value.
+                        return "errBrackets";
+                    }
+                }
+                else
+                {
+                    //We did not find another absolute value sing, expression is invalid
+                    //Todo - check this in syntax highlightning
+                    return "errBrackets";
+                }
+            }
 
             //Absolute value ---------------------------------------
-            while((idx = GetItemIndex("|", list)) != -1)
+            while ((idx = GetItemIndex("|", list)) != -1)
             {
                 int idx2 = -1;
                 if((idx2 = GetItemIndex("|", list, idx + 1)) != -1 && (idx != idx2 + 1)) {
@@ -983,6 +1029,25 @@ namespace Calculator
             for (int i = startAt; i < words.Count(); i++)
             {
                 if (list[i] == item)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Returns index of an Expression Node, that has item as its value parameter
+        /// </summary>
+        /// <param name="item">Item to find</param>
+        /// <param name="list">List to find items from</param>
+        /// <param name="startAt">Index to start searching at</param>
+        /// <returns>Index in words or -1 if item was not found</returns>
+        private int GetItemIndexFromBack(string item, List<ExpressionNode> list)
+        {
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if (list[i].value == item)
                 {
                     return i;
                 }
