@@ -83,7 +83,8 @@ namespace Calculator
                     //w.Text.Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
                     //Number can not end with a dot, also you can not divide by zero
-                    if ((text[endIndex] == '.' || text[endIndex] == ',') || (startIndex > 0 && text[startIndex - 1] == '÷' && Double.TryParse(w.Text) && Convert.ToDouble(w.Text) == 0) )
+                    double tmp = -1;
+                    if ((text[endIndex] == '.' || text[endIndex] == ',') || (startIndex > 0 && text[startIndex - 1] == '÷' && !Double.TryParse(w.Text, out tmp) && tmp == 0) )
                     {
                         w.Type = -1;
                     }
