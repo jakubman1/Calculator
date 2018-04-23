@@ -1037,5 +1037,19 @@ namespace Calculator
             }
             return -1;
         }
+
+        private void FactorialButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonEnter(sender, e);
+            inputTextBox.AppendText("!");
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
+        }
+
+        private void PowerButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonEnter(sender, e);
+            inputTextBox.AppendText("^");
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
+        }
     }
 }
