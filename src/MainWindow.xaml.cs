@@ -572,6 +572,7 @@ namespace Calculator
         {
             ButtonEnter(sender, e);
             inputTextBox.CaretPosition.InsertTextInRun((string)((Label)sender).Content);
+            inputTextBox.Focus();
             try
             {
                 inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
