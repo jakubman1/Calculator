@@ -119,7 +119,7 @@ namespace MathLibrary
 
             double guess = 1;
             double newGuess = guess;
-            double eps = 0.00001; // Precision parameter
+            double eps = 0.00000000001; // Precision parameter
 
             while (true)
             {
