@@ -1144,5 +1144,14 @@ namespace Calculator
             inputTextBox.CaretPosition = inputTextBox.Document.ContentEnd;
             inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Backward);
         }
+
+        private void BracketsButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonEnter(sender, e);
+            inputTextBox.AppendText("()");
+            inputTextBox.Focus();
+            inputTextBox.CaretPosition = inputTextBox.Document.ContentEnd;
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Backward);
+        }
     }
 }
