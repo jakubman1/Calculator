@@ -198,8 +198,8 @@ namespace Calculator
                         i++;
                     }
                     //Go back one item
-                    endIndex = i - 1;
                     i--;
+                    endIndex = i;
                     Word w = new Word
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
@@ -268,7 +268,7 @@ namespace Calculator
         /// <returns>True if it is, false if it is not</returns>
         bool IsOperator(char c)
         {
-            char[] operators = { '+', '-', '*', '/', '=', '!', '^', '|', '×', '÷', '√' };
+            char[] operators = { '+', '-', '*', '/', '=', '!', '^', '|', '×', '÷', '√', '(', ')' };
             for (int i = 0; i < operators.Length; i++)
             {
                 if(c == operators[i])
@@ -741,12 +741,19 @@ namespace Calculator
                         }
                         else
                         {
-                            
-                            list[idx].value = Convert.ToString(MathLibrary.Math.Abs(Convert.ToDouble(result)));
-                            for (int i = idx + 1; i <= idx2; i++)
+                            if(Double.TryParse(result, out double dres))
                             {
-                                list[i] = list[idx];
+                                list[idx].value = Convert.ToString(MathLibrary.Math.Abs(dres));
+                                for (int i = idx + 1; i <= idx2; i++)
+                                {
+                                    list[i] = list[idx];
+                                }
                             }
+                            else
+                            {
+                                return "errAbs";
+                            }
+                            
                         }
                     }
                     else
@@ -869,13 +876,13 @@ namespace Calculator
             }
             
 
-            Console.WriteLine("Debug list:");
+            /*Console.WriteLine("Debug list:");
             for(int i = 0; i < list.Count(); i++)
             {
                 Console.Write(list[i].value);
                 Console.Write(",");
             }
-            Console.WriteLine("END");
+            Console.WriteLine("END");*/
 
             return list[0].value;
         }
