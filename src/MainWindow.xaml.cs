@@ -369,10 +369,10 @@ namespace Calculator
         {
             string text = "";
             //Input is empty, no need to color anything
-            if (inputTextBox.Document == null)
+            if (inputTextBox.Document == null || inputTextBox.Document.Blocks.Count == 0)
             {
-                TextBlockResult.Text = "0";
                 return;
+                
             }
             //Remove event handler to prevent infinite loop.
             inputTextBox.TextChanged -= InputTextBox_TextChanged;
@@ -418,11 +418,11 @@ namespace Calculator
 
                     if (result == "" || (result.Length >= 3 && result.Substring(0,3) == "err"))
                     {
-                        TextBlockResult.Text = "Neplatny vyraz";
+                        textBlockResult.Text = "Neplatny vyraz";
                     }
                     else
                     {
-                        TextBlockResult.Text = result;
+                        textBlockResult.Text = result;
                     }
                     textBlockMemory.Text = "";
                     for(int i = 0; i < memory.Count(); i++)
@@ -579,7 +579,7 @@ namespace Calculator
         private void buttonClear_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ButtonEnter(sender, e);
-            TextBlockResult.Text = "0";
+            textBlockResult.Text = "0";
             inputTextBox.Document.Blocks.Clear();
         }
 
