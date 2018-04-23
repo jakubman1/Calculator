@@ -571,8 +571,18 @@ namespace Calculator
         private void SimpleButtonClicked(object sender, MouseButtonEventArgs e)
         {
             ButtonEnter(sender, e);
-            inputTextBox.AppendText((string)((Label)sender).Content);
-            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
+            inputTextBox.CaretPosition.InsertTextInRun((string)((Label)sender).Content);
+            try
+            {
+                inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+            }
+            catch (Exception ecx)
+            {
+                Console.WriteLine(ecx.Message);
+            }
+
+            //inputTextBox.AppendText((string)((Label)sender).Content);
+            //inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
         }
 
 
