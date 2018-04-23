@@ -149,6 +149,23 @@ namespace Calculator
                             w.Type = 2;
                             //w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex, LogicalDirection.Backward);
                         }
+                        /*else if(w.Text == "=-")
+                        {
+                           
+                            w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex, LogicalDirection.Backward);
+                            w.Text = "=";
+
+                            Word w2 = new Word
+                            {
+                                StartPos = run.ContentStart.GetPositionAtOffset(startIndex + 1, LogicalDirection.Forward),
+                                EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
+                                Text = "-",
+                                Type = 1
+                            };
+                            words.Add(w);
+                            words.Add(w2);
+                            continue;
+                        }*/
                         else
                         {
                             w.Type = -1;
@@ -571,8 +588,20 @@ namespace Calculator
         private void SimpleButtonClicked(object sender, MouseButtonEventArgs e)
         {
             ButtonEnter(sender, e);
-            inputTextBox.AppendText((string)((Label)sender).Content);
-            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
+            inputTextBox.CaretPosition.InsertTextInRun((string)((Label)sender).Content);
+            inputTextBox.Focus();
+            try
+            {
+                inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+                //inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextContextPosition(LogicalDirection.Forward);
+            }
+            catch (Exception ecx)
+            {
+                Console.WriteLine(ecx.Message);
+            }
+
+            //inputTextBox.AppendText((string)((Label)sender).Content);
+            //inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
         }
 
 
@@ -795,7 +824,16 @@ namespace Calculator
             while ((idx = GetItemIndex("-", list, startAt)) != -1)
             {
                 startAt = idx + 1;
-                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Sub)))
+                if (idx == 0 || !Double.TryParse(list[idx - 1].value, out double tmp))
+                {
+                    if(idx < list.Count() - 1 && Double.TryParse(list[idx + 1].value, out double val))
+                    {
+                        val = -val;
+                        list[idx].value = Convert.ToString(val);
+                        list[idx + 1] = list[idx];
+                    }
+                } 
+                else if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Sub)))
                 {
                     return "errSub";
                 }
@@ -1114,8 +1152,49 @@ namespace Calculator
         private void PowerButtonClicked(object sender, MouseButtonEventArgs e)
         {
             ButtonEnter(sender, e);
-            inputTextBox.AppendText("^");
-            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
+            inputTextBox.CaretPosition.InsertTextInRun("^");
+            inputTextBox.Focus();
+            try
+            {
+                inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+            }
+            catch (Exception ecx)
+            {
+                Console.WriteLine(ecx.Message);
+            }
+        }
+
+        private void RootButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonEnter(sender, e);
+            inputTextBox.CaretPosition.InsertTextInRun("√");
+            inputTextBox.Focus();
+            try
+            {
+                inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+            }
+            catch (Exception ecx)
+            {
+                Console.WriteLine(ecx.Message);
+            }
+        }
+
+        private void AbsButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonEnter(sender, e);
+            inputTextBox.AppendText("||");
+            inputTextBox.Focus();
+            inputTextBox.CaretPosition = inputTextBox.Document.ContentEnd;
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Backward);
+        }
+
+        private void BracketsButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonEnter(sender, e);
+            inputTextBox.AppendText("()");
+            inputTextBox.Focus();
+            inputTextBox.CaretPosition = inputTextBox.Document.ContentEnd;
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Backward);
         }
     }
 }
