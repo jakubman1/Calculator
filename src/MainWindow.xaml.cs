@@ -149,6 +149,23 @@ namespace Calculator
                             w.Type = 2;
                             //w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex, LogicalDirection.Backward);
                         }
+                        /*else if(w.Text == "=-")
+                        {
+                           
+                            w.EndPos = run.ContentStart.GetPositionAtOffset(endIndex, LogicalDirection.Backward);
+                            w.Text = "=";
+
+                            Word w2 = new Word
+                            {
+                                StartPos = run.ContentStart.GetPositionAtOffset(startIndex + 1, LogicalDirection.Forward),
+                                EndPos = run.ContentStart.GetPositionAtOffset(endIndex + 1, LogicalDirection.Backward),
+                                Text = "-",
+                                Type = 1
+                            };
+                            words.Add(w);
+                            words.Add(w2);
+                            continue;
+                        }*/
                         else
                         {
                             w.Type = -1;
@@ -806,7 +823,16 @@ namespace Calculator
             while ((idx = GetItemIndex("-", list, startAt)) != -1)
             {
                 startAt = idx + 1;
-                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Sub)))
+                if (idx == 0 || !Double.TryParse(list[idx - 1].value, out double tmp))
+                {
+                    if(idx < list.Count() - 1 && Double.TryParse(list[idx + 1].value, out double val))
+                    {
+                        val = -val;
+                        list[idx].value = Convert.ToString(val);
+                        list[idx + 1] = list[idx];
+                    }
+                } 
+                else if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Sub)))
                 {
                     return "errSub";
                 }
