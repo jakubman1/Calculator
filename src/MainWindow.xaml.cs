@@ -444,7 +444,15 @@ namespace Calculator
                     textBlockMemory.Text = "";
                     for(int i = 0; i < memory.Count(); i++)
                     {
-                        textBlockMemory.Text += memory[i].Letter + "=" + Convert.ToString(memory[i].Number) + "\n";
+                        if(i % 3 == 2)
+                        {
+                            textBlockMemory.Text += memory[i].Letter + "=" + Convert.ToString(memory[i].Number) + "\n";
+                        }
+                        else
+                        {
+                            textBlockMemory.Text += memory[i].Letter + "=" + Convert.ToString(memory[i].Number) + "\t";
+                        }
+                       
                     }
                     
                 }
