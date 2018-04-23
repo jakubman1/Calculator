@@ -198,8 +198,8 @@ namespace Calculator
                         i++;
                     }
                     //Go back one item
-                    endIndex = i - 1;
                     i--;
+                    endIndex = i;
                     Word w = new Word
                     {
                         StartPos = run.ContentStart.GetPositionAtOffset(startIndex, LogicalDirection.Forward),
@@ -268,7 +268,7 @@ namespace Calculator
         /// <returns>True if it is, false if it is not</returns>
         bool IsOperator(char c)
         {
-            char[] operators = { '+', '-', '*', '/', '=', '!', '^', '|', '×', '÷', '√' };
+            char[] operators = { '+', '-', '*', '/', '=', '!', '^', '|', '×', '÷', '√', '(', ')' };
             for (int i = 0; i < operators.Length; i++)
             {
                 if(c == operators[i])
