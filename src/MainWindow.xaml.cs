@@ -214,7 +214,7 @@ namespace Calculator
                     
                     words.Add(w);
                 }
-                else if (text[i] >= '|')
+                else if (text[i] == '|')
                 {
                     endIndex = i + 1;
                     Word w = new Word
