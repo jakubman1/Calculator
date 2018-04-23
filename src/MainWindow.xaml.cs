@@ -1219,8 +1219,7 @@ namespace Calculator
 
         private void MenuItemNapovedaClick(object sender, RoutedEventArgs e)
         {
-            help help = new help();
-            help.Show();
+            System.Diagnostics.Process.Start("https://github.com/jakubman1/Calculator/blob/master/user_manual.pdf");
         }
 
         private void MenuItemOProgramuClick(object sender, RoutedEventArgs e)
