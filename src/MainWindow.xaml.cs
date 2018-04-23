@@ -9,9 +9,12 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Threading;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MathLibrary;
+using System.Globalization;
 
 namespace Calculator
 {
@@ -23,6 +26,7 @@ namespace Calculator
         public MainWindow()
         {
             InitializeComponent();
+            buttonDecimal.Content = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
         }
 
         struct Word
@@ -32,14 +36,8 @@ namespace Calculator
             public string Text;
             public int Type; //0=numbers,1=standard operators,2=special operators,3=exponents,4=letters(memory),5=absolute value, -1=error state
         }
-
-        struct MemItem
-        {
-            public char Letter;
-            public bool Value;
-        }
         private List<Word> words = new List<Word>();
-        private List<MemItem> memory = new List<MemItem>();
+        public List<MemItem> memory = new List<MemItem>();
 
         //Setup brushes
         Brush numberBrush = new SolidColorBrush(Color.FromArgb(255, 34, 207, 247));
@@ -54,17 +52,20 @@ namespace Calculator
         {
             int startIndex = 0;
             int endIndex = 0;
+            //text.Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+            //text.Replace(".", Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+            //Console.WriteLine(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
             //Console.WriteLine(text);
             //Lets go through the whole text, letter by letter
-            for(int i = 0; i < text.Length; i++)
+            for (int i = 0; i < text.Length; i++)
             {
                 
                 //We found a number
-                if ((text[i] >= '0' && text[i] <= '9') || (text[i] == '.' || text[i] == ','))
+                if ((text[i] >= '0' && text[i] <= '9') || (text[i] == CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator[0]))
                 {
                     //Check for the whole number
-                    while (i < text.Length && ((text[i] >= '0' && text[i] <= '9') || (text[i] == '.' || text[i] == ',')))
+                    while (i < text.Length && ((text[i] >= '0' && text[i] <= '9') || (text[i] == CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator[0])))
                     {
                         i++;
                     }
@@ -79,8 +80,11 @@ namespace Calculator
                         Text = text.Substring(startIndex, endIndex + 1 - startIndex)
                     };
 
-                    //Number can not end with a dot
-                    if(text[endIndex] == '.' || text[endIndex] == ',')
+                    //w.Text.Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
+                    //Number can not end with a dot, also you can not divide by zero
+                    double tmp = -1;
+                    if ((text[endIndex] == '.' || text[endIndex] == ',') || (startIndex > 0 && text[startIndex - 1] == '÷' && !Double.TryParse(w.Text, out tmp) && tmp == 0) )
                     {
                         w.Type = -1;
                     }
@@ -119,7 +123,23 @@ namespace Calculator
                     //Operator has one character - always correct
                     if((endIndex + 1 - startIndex) == 1)
                     {
-                        w.Type = 1;
+                        //= sign must be at second position
+                        if (w.Text == "=")
+                        {
+                            if(startIndex == 1)
+                            {
+                                w.Type = 1;
+                            }
+                            else
+                            {
+                                w.Type = -1;
+                            }
+                        }
+                        else
+                        {
+                            w.Type = 1;
+                        }
+                        
                     }
                     //Operator has two characters - We are replacing the text, if we find ** or ××
                     else if ((endIndex + 1 - startIndex) == 2)
@@ -194,7 +214,7 @@ namespace Calculator
                     
                     words.Add(w);
                 }
-                else if (text[i] >= '|')
+                else if (text[i] == '|' || text[i] == '(' || text[i] == ')')
                 {
                     endIndex = i + 1;
                     Word w = new Word
@@ -257,6 +277,68 @@ namespace Calculator
             }
             return false;
         }
+
+        private int AddToMemory(char name, double value)
+        {
+            int index;
+            if((index = GetMemoryIndex(name)) != -1)
+            {
+                memory[index] = new MemItem(name, value);
+            }
+            else
+            {
+                memory.Add(new MemItem(name, value));
+            }
+            return 0;
+        }
+
+        private int GetMemoryIndex(char c)
+        {
+            for (int i = 0; i < memory.Count; i++)
+            {
+                if (c == memory[i].Letter)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets value from memory by a letter.
+        /// </summary>
+        /// <param name="c">Letter to find</param>
+        /// <returns>Value of memory item. NaN if memory item was not found</returns>
+        double GetFromMemory(char c)
+        {
+            for(int i = 0; i < memory.Count; i++)
+            {
+                if (c == memory[i].Letter)
+                {
+                    return memory[i].Number;
+                }
+            }
+            return Double.NaN;
+        }
+
+        private void SolveMemory(List<ExpressionNode> list)
+        {
+            for(int i = 0; i < list.Count(); i++)
+            {
+                if (IsLetter(list[i].value))
+                {
+                    double value = GetFromMemory(list[i].value[0]);
+                    if(!Double.IsNaN(value) && !((i < list.Count() - 1) && list[i + 1].value == "="))
+                    {
+                        list[i].value = Convert.ToString(value);
+                    } 
+                }
+            }
+        }
+        private bool IsLetter(string s)
+        {
+            return s.Length == 1 && ((s[0] <= 'z' && s[0] >= 'a') || (s[0] <= 'Z' && s[0] >= 'A'));
+        }
         /// <summary>
         /// Replaces user written input into correct characters
         /// </summary>
@@ -287,9 +369,10 @@ namespace Calculator
         {
             string text = "";
             //Input is empty, no need to color anything
-            if (inputTextBox.Document == null)
+            if (inputTextBox.Document == null || inputTextBox.Document.Blocks.Count == 0)
             {
                 return;
+                
             }
             //Remove event handler to prevent infinite loop.
             inputTextBox.TextChanged -= InputTextBox_TextChanged;
@@ -323,13 +406,30 @@ namespace Calculator
 
             if(words.Count() > 0)
             {
+
                 if (GetItemIndex(-1, words) != -1)
                 {
-                    TextBlockResult.Text = "Chyba";
+                    //There was an error in the input, equation can not be solved
                 }
                 else
                 {
-                    TextBlockResult.Text = Solve(WordToStringList(words));
+                    
+                    string result = Solve(WordToNodeList(words));
+
+                    if (result == "" || (result.Length >= 3 && result.Substring(0,3) == "err"))
+                    {
+                        textBlockResult.Text = "Neplatny vyraz";
+                    }
+                    else
+                    {
+                        textBlockResult.Text = result;
+                    }
+                    textBlockMemory.Text = "";
+                    for(int i = 0; i < memory.Count(); i++)
+                    {
+                        textBlockMemory.Text += memory[i].Letter + "=" + Convert.ToString(memory[i].Number) + "\n";
+                    }
+                    
                 }
             }
             
@@ -463,14 +563,6 @@ namespace Calculator
             ((Label)sender).Background = (Brush)bc.ConvertFrom("#CB1C51");
         }
 
-        // testovaci funkce, je zapotrebi zavolat ButtenPressedEffect a v eventech tlacitka zavolat ButtonEnter pri MouseLeftButtonUp
-        private void Button42Clicked(object sender, MouseButtonEventArgs e)
-        {
-            ButtonPressedEffect(sender, e);
-            //inputTextBox.AppendText("42");
-        }
-
-
         /// <summary>
         /// Click handler for buttons, that add their content to the input field.
         /// </summary>
@@ -480,18 +572,21 @@ namespace Calculator
         {
             ButtonEnter(sender, e);
             inputTextBox.AppendText((string)((Label)sender).Content);
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
         }
 
 
         private void buttonClear_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            TextBlockResult.Text = "0";
+            ButtonEnter(sender, e);
+            textBlockResult.Text = "0";
             inputTextBox.Document.Blocks.Clear();
         }
 
         private void buttonDelete_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if(words.Count() > 0)
+            ButtonEnter(sender, e);
+            if (words.Count() > 0)
             {
                 inputTextBox.TextChanged -= InputTextBox_TextChanged;
                 buttonDelete.MouseUp -= buttonDelete_MouseUp;
@@ -509,12 +604,19 @@ namespace Calculator
             
         }
 
-        private List<string> WordToStringList(List<Word> list)
+        /// <summary>
+        /// Convert list of words into list of strings, where list.Text will be inserted into result list.
+        /// </summary>
+        /// <param name="list">List of words to convert</param>
+        /// <returns>List of strings</returns>
+        private List<ExpressionNode> WordToNodeList(List<Word> list)
         {
-            List<string> result = new List<string>();
+            List<ExpressionNode> result = new List<ExpressionNode>();
             for(int i = 0; i < list.Count(); i++)
             {
-                result.Add(list[i].Text);
+                
+                ExpressionNode en = new ExpressionNode(list[i].Text, i);
+                result.Add(en);
             }
 
             return result;
@@ -522,12 +624,397 @@ namespace Calculator
 
         /// <summary>
         /// Solve equation from a list of strings. Each string should represent one operator or operand.
+        /// Error strings signify, that something happened during computing. If you see no exception in stdout, 
+        /// one of operands was probably wrong.
+        /// Error strings (check stdout for detailed error):
+        /// "errFact" => factorial error (possibly overflow or wrong operand)
+        /// "errPow" => pow error (possibly one of operands is wrong)
+        ///  "" => other error 
         /// </summary>
-        /// <returns>Result of an equation as a string. Can return non-numeric value on error.</returns>
-        private string Solve(List<string> list)
+        /// <returns>Result of an equation as a string. Returns error string on error</returns>
+        private string Solve(List<ExpressionNode> list)
         {
+            int idx;
+            int startAt = 0;
+
+            //Change letters from memory into numbers
+            SolveMemory(list);
+
+            //We are solving the equation from the most significant operators 
+            //we don't have to solve numbers themeselves, as they won't create trees and are already nodes.
+
+            //Brackets ---------------------------------------
+            while ((idx = GetItemIndex("(", list)) != -1)
+            {
+                int idx2 = -1;
+                if ((idx2 = GetItemIndexFromBack(")", list)) != -1 && (idx != idx2 + 1))
+                {
+                    //We found another absolute value sign, solve the expression inside of it. 
+                    List<ExpressionNode> insideList = new List<ExpressionNode>();
+                    for (int i = idx + 1; i < idx2; i++)
+                    {
+                        insideList.Add(list[i]);
+                        /*Console.Write("Adding:");
+                        Console.WriteLine(list[i].value);*/
+                    }
+                    if (insideList.Count() != 0)
+                    {
+                        string result = Solve(insideList);
+                        if (result.Length >= 3 && result.Substring(0, 3) == "err")
+                        {
+                            //Exression inside brackets was invalid.
+                            return "errBrackets";
+                        }
+                        else
+                        {
+
+                            list[idx].value = result;
+                            for (int i = idx + 1; i <= idx2; i++)
+                            {
+                                list[i] = list[idx];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //There was nothing in the absolute value.
+                        return "errBrackets";
+                    }
+                }
+                else
+                {
+                    //We did not find another absolute value sing, expression is invalid
+                    //Todo - check this in syntax highlightning
+                    return "errBrackets";
+                }
+            }
+
+            //Absolute value ---------------------------------------
+            while ((idx = GetItemIndex("|", list)) != -1)
+            {
+                int idx2 = -1;
+                if((idx2 = GetItemIndex("|", list, idx + 1)) != -1 && (idx != idx2 + 1)) {
+                    //We found another absolute value sign, solve the expression inside of it. 
+                    List<ExpressionNode> insideList = new List<ExpressionNode>();
+                    for(int i = idx + 1; i < idx2; i++)
+                    {
+                        insideList.Add(list[i]);
+                        /*Console.Write("Adding:");
+                        Console.WriteLine(list[i].value);*/
+                    }
+                    if(insideList.Count() != 0)
+                    {
+                        string result = Solve(insideList);
+                        if(result.Length >= 3 && result.Substring(0,3) == "err")
+                        {
+                            //Exression inside absolute value was invalid.
+                            return "errAbs";
+                        }
+                        else
+                        {
+                            
+                            list[idx].value = Convert.ToString(MathLibrary.Math.Abs(Convert.ToDouble(result)));
+                            for (int i = idx + 1; i <= idx2; i++)
+                            {
+                                list[i] = list[idx];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //There was nothing in the absolute value.
+                        return "errAbs";
+                    }
+                }
+                else
+                {
+                    //We did not find another absolute value sing, expression is invalid
+                    //Todo - check this in syntax highlightning
+                    return "errAbs";
+                }
+            }
+
+            //Factorial --------------------------------------------
+            startAt = 0;
+            while ((idx = GetItemIndex("!", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if(Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Factorial)))
+                {
+                    return "errFact";
+                }
+            }
+
+            //Pow function ----------------------------------------
+            startAt = 0;
+            while ((idx = GetItemIndex("^", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if(Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Pow)))
+                {
+                    return "errPow";
+                }
+            }
+
+            startAt = 0;
+            //Root function ----------------------------------------
+            while ((idx = GetItemIndex("√", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Root, reverseOrder: true)))
+                {
+                    return "errRoot";
+                }
+
+            }
+
+            startAt = 0;
+            //Divide function ----------------------------------------
+            while ((idx = GetItemIndex("÷", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Divide)))
+                {
+                    return "errDivide";
+                }
+            }
+
+            startAt = 0;
+            //Multiply function ----------------------------------------
+            while ((idx = GetItemIndex("×", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Multiply)))
+                {
+                    return "errMultiply";
+                }
+            }
+
+            startAt = 0;
+            //Sub function ----------------------------------------
+            while ((idx = GetItemIndex("-", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Sub)))
+                {
+                    return "errSub";
+                }
+            }
+
+            startAt = 0;
+            //Add function ----------------------------------------
+            while ((idx = GetItemIndex("+", list, startAt)) != -1)
+            {
+                startAt = idx + 1;
+                if (Double.IsNaN(SolveOperator(ref list, idx, f: MathLibrary.Math.Add)))
+                {
+                    return "errAdd";
+                }
+            }
+
+            //Add variable to memory (operator =) ----------------
+            //At least 3 items must exist
+            if(list.Count() >= 3)
+            {
+                //Second character is =, first should be a character
+                if (list[1].value == "=")
+                {
+                    if (IsLetter(list[0].value) && Double.TryParse(list[2].value, out double num))
+                    {
+                        AddToMemory(list[0].value[0], num);
+                        //Console.WriteLine("Added to memory");
+                        FillSubtreeWithNodes(ref list, list[2], list[1]);
+                        FillSubtreeWithNodes(ref list, list[2], list[0]);
+
+                    }
+                }
+            }
             
-            return "0";
+
+            Console.WriteLine("Debug list:");
+            for(int i = 0; i < list.Count(); i++)
+            {
+                Console.Write(list[i].value);
+                Console.Write(",");
+            }
+            Console.WriteLine("END");
+
+            return list[0].value;
+        }
+
+        /// <summary>
+        /// Changes all nodes in a list that match the node "subtree" to node "to"
+        /// </summary>
+        /// <param name="list">List to change</param>
+        /// <param name="to">Node to replace subtree with</param>
+        /// <param name="subtree">Subtree to replace</param>
+       private void FillSubtreeWithNodes(ref List<ExpressionNode> list, ExpressionNode to, ExpressionNode subtree)
+        {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
+            for (int i = 0; i < list.Count(); i++)
+            {
+                if(list[i].id == subtree.id)
+                {
+                    list[i] = to;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Solves a single part of input expression
+        /// </summary>
+        /// <param name="list">Reference to a list of items</param>
+        /// <param name="idx">Index in the list, where the operator can be found</param>
+        /// <param name="f">Function to call on operands</param>
+        /// <returns>Result of an operation on success, NaN on error</returns>
+        private double SolveOperator(ref List<ExpressionNode> list ,int idx, Func<double, double, double> f)
+        {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+            //Create subtree
+            if (idx > 0 && idx < (list.Count() - 1))
+            {
+                //Set parent to previous node/subtree
+                list[idx - 1].parent = list[idx];
+                //Set number/subtree as a child of operator node
+                list[idx].left = list[idx - 1];
+
+                //Set parent to next node/subtree
+                list[idx + 1].parent = list[idx];
+                //Set number/subtree as a child of operator node
+                list[idx].right = list[idx + 1];
+
+            }
+            else
+            {
+                return Double.NaN;
+            }
+
+            try
+            {
+                //Calculate the result with given function
+                double result = f(Convert.ToDouble(list[idx].left.value), Convert.ToDouble(list[idx].right.value));
+                //Set node value to th result
+                list[idx].value = Convert.ToString(result);
+                //Change reference, so other operators would detect this whole subtree and use it.
+                FillSubtreeWithNodes(ref list, list[idx], list[idx - 1]);
+                FillSubtreeWithNodes(ref list, list[idx], list[idx + 1]);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return Double.NaN;
+            }
+        }
+
+        /// <summary>
+        /// Solves a single part of input expression
+        /// </summary>
+        /// <param name="list">Reference to a list of items</param>
+        /// <param name="idx">Index in the list, where the operator can be found</param>
+        /// <param name="f">Function to call on operands</param>
+        /// <param name="reverseOrder">If true, the number in front of operand will be interpreted as int and sent to function as second parameter</param>
+        /// <returns>Result of an operation on success, NaN on error</returns>
+        private double SolveOperator(ref List<ExpressionNode> list, int idx, Func<double, int, double> f, bool reverseOrder = false)
+        {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
+            //Create subtree
+            if (idx > 0 && idx < (list.Count() - 1))
+            {
+                //Set parent to previous node/subtree
+                list[idx - 1].parent = list[idx];
+                //Set number/subtree as a child of operator node
+                list[idx].left = list[idx - 1];
+
+                //Set parent to next node/subtree
+                list[idx + 1].parent = list[idx];
+                //Set number/subtree as a child of operator node
+                list[idx].right = list[idx + 1];
+            }
+            else
+            {
+                return Double.NaN;
+            }
+            try
+            {
+                double result;
+                //Calculate the result with given function
+                if (reverseOrder)
+                {
+                    result = f(Convert.ToDouble(list[idx].right.value), Convert.ToInt32(list[idx].left.value));
+                }
+                else
+                {
+                    result = f(Convert.ToDouble(list[idx].left.value), Convert.ToInt32(list[idx].right.value));
+                }
+                
+                //Set node value to th result
+                list[idx].value = Convert.ToString(result);
+                //Change reference, so other operators would detect this whole subtree and use it.
+                FillSubtreeWithNodes(ref list, list[idx], list[idx - 1]);
+                FillSubtreeWithNodes(ref list, list[idx], list[idx + 1]);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return Double.NaN;
+            }
+        }
+
+        /// <summary>
+        /// Solves a single part of input expression
+        /// </summary>
+        /// <param name="list">Reference to a list of items</param>
+        /// <param name="idx">Index in the list, where the operator can be found</param>
+        /// <param name="f">Function to call on operands</param>
+        /// <returns>Result of an operation on success, NaN on error</returns>
+        private double SolveOperator(ref List<ExpressionNode> list, int idx, Func<int, double> f)
+        {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+            //Create subtree
+            if (idx > 0)
+            {
+                //Set parent to previous node/subtree
+                list[idx - 1].parent = list[idx];
+                //Set number/subtree as a child of operator node
+                list[idx].left = list[idx - 1];
+                
+            }
+            else
+            {
+                return Double.NaN;
+            }
+
+            try
+            {
+                //Calculate the result with given function
+                double result = f(Convert.ToInt32(list[idx].left.value));
+                //Set node value to th result
+                list[idx].value = Convert.ToString(result);
+                //Change reference, so other operators would detect this whole subtree and use it.
+                FillSubtreeWithNodes(ref list, list[idx], list[idx - 1]);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return Double.NaN;
+            }
         }
 
         /// <summary>
@@ -535,12 +1022,52 @@ namespace Calculator
         /// </summary>
         /// <param name="item">Item to find</param>
         /// <param name="list">List to find items from</param>
+        /// <param name="startAt">Index to start searching at</param>
         /// <returns>Index in words or -1 if item was not found</returns>
-        private int GetItemIndex(string item, List<string> list)
+        private int GetItemIndex(string item, List<string> list, int startAt = 0)
         {
-            for(int i = 0; i < words.Count(); i++)
+            for (int i = startAt; i < words.Count(); i++)
             {
-                if(list[i] == item) {
+                if (list[i] == item)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Returns index of an Expression Node, that has item as its value parameter
+        /// </summary>
+        /// <param name="item">Item to find</param>
+        /// <param name="list">List to find items from</param>
+        /// <param name="startAt">Index to start searching at</param>
+        /// <returns>Index in words or -1 if item was not found</returns>
+        private int GetItemIndexFromBack(string item, List<ExpressionNode> list)
+        {
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if (list[i].value == item)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Returns index of a word, that has item as its value parameter
+        /// </summary>
+        /// <param name="item">Item to find</param>
+        /// <param name="list">List to find items from</param>
+        /// <param name="startAt">Index to start searching at</param>
+        /// <returns>Index in words or -1 if item was not found</returns>
+        private int GetItemIndex(string item, List<ExpressionNode> list, int startAt = 0)
+        {
+            for (int i = startAt; i < list.Count(); i++)
+            {
+                if (list[i].value == item)
+                {
                     return i;
                 }
             }
@@ -549,7 +1076,7 @@ namespace Calculator
 
         private int GetItemIndex(string item, List<Word> list)
         {
-            for (int i = 0; i < words.Count(); i++)
+            for (int i = 0; i < list.Count(); i++)
             {
                 if (list[i].Text == item)
                 {
@@ -577,7 +1104,18 @@ namespace Calculator
             return -1;
         }
 
+        private void FactorialButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonEnter(sender, e);
+            inputTextBox.AppendText("!");
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
+        }
+
+        private void PowerButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonEnter(sender, e);
+            inputTextBox.AppendText("^");
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
+        }
     }
-
-
 }
