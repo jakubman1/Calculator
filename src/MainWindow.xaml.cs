@@ -26,6 +26,7 @@ namespace Calculator
         public MainWindow()
         {
             InitializeComponent();
+            buttonDecimal.Content = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
         }
 
         struct Word
