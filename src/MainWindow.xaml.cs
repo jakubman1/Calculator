@@ -876,13 +876,13 @@ namespace Calculator
             }
             
 
-            Console.WriteLine("Debug list:");
+            /*Console.WriteLine("Debug list:");
             for(int i = 0; i < list.Count(); i++)
             {
                 Console.Write(list[i].value);
                 Console.Write(",");
             }
-            Console.WriteLine("END");
+            Console.WriteLine("END");*/
 
             return list[0].value;
         }
