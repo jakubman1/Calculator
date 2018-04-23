@@ -53,10 +53,10 @@
         <DockPanel HorizontalAlignment="Left" Height="16" LastChildFill="False" Margin="10,5,0,0" VerticalAlignment="Top" Width="734" Grid.ColumnSpan="4">
             <Menu Height="16" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" DockPanel.Dock="Top">
                 <MenuItem Header="_Soubor">
-                    <MenuItem Header="_Nápověda"/>
-                    <MenuItem Header="O programu" Click="MenuItem_Click_1"/>
+                    <MenuItem Header="_Nápověda" Click="MenuItemNapovedaClick"/>
+                    <MenuItem Header="O programu" Click="MenuItemOProgramuClick"/>
                     <Separator/>
-                    <MenuItem Header="Konec" Command="" Click="MenuItem_Click"/>
+                    <MenuItem Header="Konec" Command="" Click="MenuItemKonecClick"/>
                 </MenuItem>
 
             </Menu>

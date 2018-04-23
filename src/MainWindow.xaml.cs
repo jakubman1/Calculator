@@ -1212,15 +1212,21 @@ namespace Calculator
             inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Backward);
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void MenuItemKonecClick(object sender, RoutedEventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
         }
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        private void MenuItemNapovedaClick(object sender, RoutedEventArgs e)
         {
-            about win2 = new about();
-            win2.Show();
+            help help = new help();
+            help.Show();
+        }
+
+        private void MenuItemOProgramuClick(object sender, RoutedEventArgs e)
+        {
+            about about = new about();
+            about.Show();
         }
     }
 }
