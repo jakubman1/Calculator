@@ -1052,5 +1052,21 @@ namespace Calculator
             inputTextBox.AppendText("^");
             inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
         }
+
+        private void RootButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonEnter(sender, e);
+            inputTextBox.AppendText("√");
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.DocumentEnd;
+        }
+
+        private void AbsButtonClicked(object sender, MouseButtonEventArgs e)
+        {
+            ButtonEnter(sender, e);
+            inputTextBox.AppendText("||");
+            inputTextBox.Focus();
+            inputTextBox.CaretPosition = inputTextBox.Document.ContentEnd;
+            inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Backward);
+        }
     }
 }
