@@ -444,7 +444,15 @@ namespace Calculator
                     textBlockMemory.Text = "";
                     for(int i = 0; i < memory.Count(); i++)
                     {
-                        textBlockMemory.Text += memory[i].Letter + "=" + Convert.ToString(memory[i].Number) + "\n";
+                        if(i % 3 == 2)
+                        {
+                            textBlockMemory.Text += memory[i].Letter + "=" + Convert.ToString(memory[i].Number) + "\n";
+                        }
+                        else
+                        {
+                            textBlockMemory.Text += memory[i].Letter + "=" + Convert.ToString(memory[i].Number) + "\t";
+                        }
+                       
                     }
                     
                 }
@@ -1202,6 +1210,22 @@ namespace Calculator
             inputTextBox.Focus();
             inputTextBox.CaretPosition = inputTextBox.Document.ContentEnd;
             inputTextBox.CaretPosition = inputTextBox.CaretPosition.GetNextInsertionPosition(LogicalDirection.Backward);
+        }
+
+        private void MenuItemKonecClick(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void MenuItemNapovedaClick(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/jakubman1/Calculator/blob/master/user_manual.pdf");
+        }
+
+        private void MenuItemOProgramuClick(object sender, RoutedEventArgs e)
+        {
+            about about = new about();
+            about.Show();
         }
     }
 }
