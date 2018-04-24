@@ -2,14 +2,16 @@
 
 path = src/bin/Debug/
 exec = Calculator.exe
+dirname = xtykva00_xmanja00_xslesi02_xholas09
+
 
 all: run
 
 pack:
-	zip -r archive.zip *
+	cd ../../.. && find . $(dirname) && zip -r $(dirname).zip $(dirname)
 
 clean:
-	find . * -not -name Makefile -not -name *.zip -delete
+	cd ../../.. && rm -r $(dirname)
 
 run:
 	$(path)$(exec)
