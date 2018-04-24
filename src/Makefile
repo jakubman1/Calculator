@@ -11,7 +11,7 @@ pack:
 	cd ../../.. && find . $(dirname) && zip -r $(dirname).zip $(dirname)
 
 clean:
-	cd ../../.. && rm -r $(dirname)
+	rm -r .vs; rm -r bin; rm -r Installer/Debug; rm -r Installer/Release;
 
 run:
 	$(path)$(exec)
