@@ -5,11 +5,11 @@ exec = Calculator.exe
 
 all: run
 
-pack: #pack
-	
+pack:
+	zip -r archive.zip *
 
-clean: #clean
-	rm -rf *
+clean:
+	find . * -not -name Makefile -not -name *.zip -delete
 
 run:
 	$(path)$(exec)
