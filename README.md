@@ -19,9 +19,8 @@
 - Vstup lze zadávat pomocí tlačítek či klávesnice a zadaný výraz je vhodně obarvován.
 - Je podporována pamět a závorky.
 
-# TODO – odkaz
 ## Postup instalace
-- Pro přesný postup instalace viz manuál k instalaci.
+- Pro přesný postup instalace viz [manuál k instalaci](https://github.com/jakubman1/Calculator/blob/master/install_manual.pdf).
 
 ## Jak přispívat
 - V případě nalezení chyby či požadavku na další funkcionality kontaktujte, prosím, vedoucího týmu: xtykva00@stud.fit.vutbr.cz.
