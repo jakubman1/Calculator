@@ -119,13 +119,18 @@ namespace MathLibrary
 
             double guess = 1;
             double newGuess = guess;
-            double eps = 0.00000000001; // Precision parameter
-
+            double eps = 0.00000000000001; // Precision parameter
+            int i = 0;
             while (true)
             {
                 newGuess = Divide(n, Pow(guess, exp - 1));
                 guess = Divide(Add(Multiply(guess, exp - 1), newGuess), exp);
                 if (Abs(Sub(guess, newGuess)) < eps)
+                {
+                    return newGuess;
+                }
+                i++;
+                if(i > 50000)
                 {
                     return newGuess;
                 }
